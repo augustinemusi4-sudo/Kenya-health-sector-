@@ -4,141 +4,281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123b78">
 <title>Kenya Health Sector</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f3f7f5;color:#24352d;font-family:Arial,sans-serif}
-header{background:#075b3b;color:white;padding:22px}
-header h2{margin:0}
-header p{margin-bottom:0}
-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-button{border:0;border-radius:7px;padding:12px 16px;background:#087747;color:white;cursor:pointer}
-button:disabled{opacity:.5}
-main{max-width:950px;margin:25px auto;padding:14px}
-.card{background:white;padding:20px;margin-bottom:18px;border-radius:12px;box-shadow:0 2px 12px #0000000c}
-input,textarea{width:100%;padding:13px;border:1px solid #ccd8d1;border-radius:7px;margin:7px 0 14px;font:inherit}
-textarea{min-height:90px}
-label{font-size:14px;font-weight:bold}
-.hidden{display:none!important}
-.muted{color:#66766d;font-size:14px;line-height:1.6}
-.survey{border:1px solid #dce8e0;border-radius:9px;padding:16px;margin:12px 0}
-.green{color:#087747;font-weight:bold}
-.notice{background:#eef7f1;padding:13px;border-radius:8px;line-height:1.6}
-.error{color:#b42318}
-.success{color:#087747}
-footer{background:#063d29;color:white;text-align:center;padding:25px;margin-top:35px}
+:root {
+  --blue:#123b78;
+  --blue2:#1e5aa8;
+  --red:#c6283d;
+  --red-dark:#a91f32;
+  --light:#f2f6fb;
+  --ink:#1c2b3a;
+  --muted:#617184;
+  --border:#d8e1ec;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--light);
+  color:var(--ink);
+  font-family:Arial,sans-serif;
+}
+header {
+  background:linear-gradient(110deg,var(--blue),var(--blue2));
+  color:white;
+  padding:18px;
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  max-width:1000px;
+  margin:auto;
+}
+.logo {width:62px;height:62px;flex-shrink:0}
+.brand h1 {font-size:22px;margin:0 0 5px}
+.brand p {margin:0;font-size:13px;color:#e1eafa}
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  max-width:1000px;
+  margin:16px auto 0;
+}
+button {
+  border:0;
+  border-radius:8px;
+  padding:12px 16px;
+  background:var(--red);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover {background:var(--red-dark)}
+button.secondary {
+  background:white;
+  color:var(--blue);
+  border:1px solid var(--border);
+}
+button:disabled {opacity:.6;cursor:wait}
+main {max-width:1000px;margin:24px auto;padding:0 14px}
+.card {
+  background:white;
+  padding:22px;
+  margin-bottom:18px;
+  border-radius:14px;
+  border:1px solid #e5ebf2;
+  box-shadow:0 4px 18px #17385c0c;
+}
+h2 {color:var(--blue);margin-top:0}
+input,textarea,select {
+  width:100%;
+  padding:13px;
+  border:1px solid #cbd6e3;
+  border-radius:8px;
+  margin:7px 0 15px;
+  font:inherit;
+  background:white;
+}
+textarea {min-height:95px}
+label {font-size:14px;font-weight:bold}
+.hidden {display:none!important}
+.muted {color:var(--muted);font-size:14px;line-height:1.6}
+.error {color:#b42318;font-size:14px}
+.success {color:#087443;font-size:14px}
+.survey {
+  border:1px solid var(--border);
+  border-left:4px solid var(--red);
+  border-radius:10px;
+  padding:16px;
+  margin:13px 0;
+}
+.notice {
+  background:#f0f5fc;
+  border:1px solid #dbe6f4;
+  padding:14px;
+  border-radius:9px;
+  line-height:1.6;
+}
+.auth-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+footer {
+  background:#102f5e;
+  color:white;
+  text-align:center;
+  padding:25px;
+  margin-top:35px;
+}
+footer p {color:#dce7f6;font-size:13px}
+@media(max-width:650px) {
+  .auth-grid {grid-template-columns:1fr}
+  .brand h1 {font-size:19px}
+  nav button {flex:1}
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h2>Kenya Health Sector</h2>
-<p>Health research and questionnaires</p>
-<nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('account')">Account</button>
-<button onclick="show('dashboard')">Dashboard</button>
-<button onclick="logout()">Logout</button>
-</nav>
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 100 100" role="img" aria-label="Medical cross and stethoscope logo">
+      <circle cx="50" cy="50" r="47" fill="#fff"/>
+      <path d="M43 17h14v20h20v14H57v20H43V51H23V37h20z" fill="#c6283d"/>
+      <path d="M24 72c-5-4-7-11-3-16 3-4 9-4 12 0l4 5 4-5c4-4 10-4 13 0 4 5 2 12-3 16L41 83z"
+        fill="none" stroke="#123b78" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M70 62v11c0 7-5 12-12 12"
+        fill="none" stroke="#123b78" stroke-width="4"
+        stroke-linecap="round"/>
+      <circle cx="57" cy="85" r="4" fill="#c6283d"/>
+    </svg>
+    <div>
+      <h1>Kenya Health Sector</h1>
+      <p>Independent health information and research platform</p>
+    </div>
+  </div>
+
+  <nav>
+    <button class="secondary" onclick="showHome()">Home</button>
+    <button onclick="showAccount()">Create Account / Login</button>
+    <button id="dashboardNav" class="hidden" onclick="openDashboard()">Dashboard</button>
+    <button id="logoutNav" class="hidden" onclick="logout()">Logout</button>
+  </nav>
 </header>
 
 <main>
 
 <section id="home" class="card">
-<h2>Welcome to Kenya Health Sector</h2>
-<p>Explore health-related questionnaires and research surveys.</p>
-<div class="notice">
-<strong>Survey access information</strong>
-<p>Each survey requires a separate access payment of KSh 100.</p>
-<p>Reference value displayed per survey: KSh 250. This is not money earned by participants and is not withdrawable.</p>
-</div>
-<p class="muted">This is an independently operated platform, not an official Kenyan government website.</p>
-<button onclick="show('account')">Register / Login</button>
+  <h2>Welcome to Kenya Health Sector</h2>
+  <p>
+    Welcome to our independent online health information and research platform.
+  </p>
+  <p class="muted">
+    Create an account or log in to access member content.
+  </p>
+  <button onclick="showAccount()">Get Started</button>
+  <p class="muted">
+    This platform is independently operated and is not affiliated with
+    the Government of Kenya or the Ministry of Health.
+  </p>
 </section>
 
 <section id="account" class="card hidden">
-<h2>Create an account</h2>
+  <h2>Member Access</h2>
 
-<label>Full name</label>
-<input id="fullName" placeholder="Enter your full name">
+  <div class="auth-grid">
+    <div>
+      <h3>Create an Account</h3>
 
-<label>Phone number</label>
-<input id="phone" placeholder="07XXXXXXXX">
+      <label for="fullName">Full Name</label>
+      <input id="fullName" autocomplete="name" placeholder="Enter full name">
 
-<label>Email address</label>
-<input id="email" type="email" placeholder="Enter email">
+      <label for="phone">Phone Number</label>
+      <input id="phone" autocomplete="tel" placeholder="07XXXXXXXX">
 
-<label>Password</label>
-<input id="password" type="password" placeholder="Create password">
+      <label for="email">Email Address</label>
+      <input id="email" type="email" autocomplete="email" placeholder="Enter email">
 
-<button onclick="register()">Create account</button>
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="new-password" placeholder="At least 8 characters">
 
-<hr>
+      <button id="registerButton" onclick="register()">Create Account</button>
+    </div>
 
-<h3>Login</h3>
-<label>Email address</label>
-<input id="loginEmail" type="email" placeholder="Email">
+    <div>
+      <h3>Already Registered?</h3>
 
-<label>Password</label>
-<input id="loginPassword" type="password" placeholder="Password">
+      <label for="loginEmail">Email Address</label>
+      <input id="loginEmail" type="email" autocomplete="email" placeholder="Enter email">
 
-<button onclick="login()">Login</button>
-<p id="authMessage" class="muted"></p>
+      <label for="loginPassword">Password</label>
+      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password">
+
+      <button id="loginButton" onclick="login()">Login</button>
+
+      <p class="muted">
+        If email confirmation is enabled, confirm your email before logging in.
+      </p>
+    </div>
+  </div>
+
+  <p id="authMessage" aria-live="polite" class="muted"></p>
 </section>
 
 <section id="dashboard" class="card hidden">
-<h2>My Dashboard</h2>
-<p id="welcome"></p>
-<p class="muted">Choose a survey to see its details and access requirements.</p>
-<button onclick="loadSurveys()">Refresh surveys</button>
-<div id="surveyList"></div>
+  <h2>Member Dashboard</h2>
+  <p id="welcome"></p>
+  <p class="muted">Your available member content appears below.</p>
+  <button class="secondary" onclick="loadSurveys()">Refresh</button>
+  <div id="surveyList"></div>
 </section>
 
 <section id="payment" class="card hidden">
-<h2>Unlock your survey</h2>
-<div id="paymentDetails"></div>
+  <h2>Survey Access Payment</h2>
 
-<div class="notice">
-<p><strong>Payment amount: KSh 100</strong></p>
-<p>Payment method: M-Pesa Pochi</p>
-<p>Business label: E Commerce</p>
-<p>Phone number: <strong>0718282275</strong></p>
-<p>Registered recipient: Maureen Bwire</p>
-</div>
+  <div id="paymentDetails"></div>
 
-<p class="muted">Before sending money, confirm that M-Pesa displays the correct recipient. Do not proceed if the details do not match.</p>
+  <div class="notice">
+    <p><strong>Access Fee: KSh 100</strong></p>
+    <p>Payment Method: M-Pesa Pochi</p>
+    <p>Business Label: E Commerce</p>
+    <p>Phone Number: <strong>0718282275</strong></p>
+    <p>Registered Recipient: <strong>Maureen Bwire</strong></p>
+  </div>
 
-<label>Your M-Pesa phone number</label>
-<input id="paymentPhone" placeholder="07XXXXXXXX">
+  <p class="muted">
+    Confirm the recipient name displayed by M-Pesa before sending money.
+    Do not proceed if the details do not match. Access is granted only
+    after an administrator verifies the payment.
+  </p>
 
-<label>M-Pesa transaction code</label>
-<input id="receipt" placeholder="Enter transaction code after payment">
+  <label for="paymentPhone">Your M-Pesa Phone Number</label>
+  <input id="paymentPhone" placeholder="07XXXXXXXX">
 
-<button onclick="submitPayment()">Submit for verification</button>
-<p id="paymentMessage" class="muted"></p>
+  <label for="receipt">M-Pesa Transaction Code</label>
+  <input id="receipt" placeholder="Enter transaction code">
+
+  <button id="paymentButton" onclick="submitPayment()">Submit for Verification</button>
+  <p id="paymentMessage" aria-live="polite" class="muted"></p>
 </section>
 
 <section id="questions" class="card hidden">
-<h2 id="questionTitle">Survey questions</h2>
-<p class="muted">Answer only questions you are comfortable with. Do not enter your ID number, passwords, or unnecessary identifying medical information.</p>
-<div id="questionList"></div>
+  <h2 id="questionTitle">Questionnaire</h2>
+  <p class="muted">
+    Answer only questions you are comfortable with. Do not enter your
+    ID number, passwords or unnecessary identifying medical information.
+  </p>
+  <div id="questionList"></div>
 </section>
 
 <section id="privacy" class="card">
-<h3>Privacy and consent</h3>
-<p class="muted">Read each survey's purpose before participating. Health information can be sensitive. The platform must explain how responses are used, who can access them, how long they are retained, and how participants can request deletion where applicable.</p>
+  <h3>Privacy and Consent</h3>
+  <p class="muted">
+    Before participating, read the purpose of each activity and decide
+    freely whether to participate. Health information can be sensitive.
+    The platform should explain how responses are used, who can access
+    them and how long they are retained. Avoid sharing personal medical
+    details unless necessary and you understand how they will be handled.
+  </p>
 </section>
 
 </main>
 
 <footer>
-<strong>Kenya Health Sector</strong>
-<p>Independent health questionnaire platform</p>
+  <strong>Kenya Health Sector</strong>
+  <p>Independent Platform · Not a Government Website</p>
 </footer>
 
 <script>
-const SUPABASE_URL = "https://ykwkrtfhkohpijjctdcj.supabase.co";
+const SUPABASE_URL =
+"https://ykwkrtfhkohpijjctdcj.supabase.co";
 
 const SUPABASE_ANON_KEY =
 "sb_publishable_DRAUL8NP62CcmWEpZ6iv0w_kbsSfOmI";
@@ -151,372 +291,493 @@ const db = window.supabase.createClient(
 let currentUser = null;
 let selectedSurvey = null;
 
-function show(id){
-  document.querySelectorAll("main section").forEach(section=>{
-    section.classList.add("hidden");
-  });
+function show(id) {
+  document.querySelectorAll("main section").forEach(section =>
+    section.classList.add("hidden")
+  );
+
   document.getElementById(id).classList.remove("hidden");
 }
 
-function message(id,text,type="muted"){
-  const el=document.getElementById(id);
-  el.className=type;
-  el.textContent=text;
+function showHome() {
+  show("home");
 }
 
-async function register(){
-  const name=document.getElementById("fullName").value.trim();
-  const phone=document.getElementById("phone").value.trim();
-  const email=document.getElementById("email").value.trim();
-  const password=document.getElementById("password").value;
+function showAccount() {
+  show("account");
+}
 
-  if(!name||!phone||!email||!password){
-    return message("authMessage","Complete all registration fields.","error");
+function message(id,text,type="muted") {
+  const el = document.getElementById(id);
+  el.className = type;
+  el.textContent = text;
+}
+
+function updateNavigation() {
+  document.getElementById("dashboardNav")
+    .classList.toggle("hidden",!currentUser);
+
+  document.getElementById("logoutNav")
+    .classList.toggle("hidden",!currentUser);
+}
+
+function requireLogin() {
+  if (currentUser) return true;
+
+  showAccount();
+  message(
+    "authMessage",
+    "Please create an account or log in to continue."
+  );
+
+  return false;
+}
+
+async function register() {
+  const button = document.getElementById("registerButton");
+
+  const name = document.getElementById("fullName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!name || !phone || !email || !password) {
+    message("authMessage","Please complete all registration fields.","error");
+    return;
   }
 
-  if(password.length<8){
-    return message("authMessage","Use a password of at least 8 characters.","error");
+  if (password.length < 8) {
+    message("authMessage","Password must contain at least 8 characters.","error");
+    return;
   }
 
-  const {data,error}=await db.auth.signUp({
-    email,
-    password,
-    options:{
-      data:{full_name:name,phone:phone}
-    }
-  });
+  button.disabled = true;
+  button.textContent = "Creating Account...";
 
-  if(error){
-    return message("authMessage",error.message,"error");
-  }
-
-  if(data.session && data.user){
-    currentUser=data.user;
-    const {error:profileError}=await db.from("profiles").upsert({
-      id:data.user.id,
-      full_name:name,
-      phone:phone
+  try {
+    const {data,error} = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name:name,
+          phone:phone
+        }
+      }
     });
 
-    if(profileError){
-      return message("authMessage",profileError.message,"error");
+    if (error) throw error;
+
+    if (data.session && data.user) {
+      currentUser = data.user;
+
+      await ensureProfile(name,phone);
+      updateNavigation();
+      await showDashboard();
+
+      message("authMessage","Account created successfully.","success");
+    } else {
+      message(
+        "authMessage",
+        "Registration received. Check your email and confirm your account. Then return here and log in.",
+        "success"
+      );
     }
 
-    await showDashboard();
-  }else{
+  } catch(error) {
     message(
       "authMessage",
-      "Registration received. Check your email to confirm your account, then log in.",
-      "success"
+      error.message || "Account creation failed. Please try again.",
+      "error"
     );
+  } finally {
+    button.disabled = false;
+    button.textContent = "Create Account";
   }
 }
 
-async function login(){
-  const email=document.getElementById("loginEmail").value.trim();
-  const password=document.getElementById("loginPassword").value;
+async function login() {
+  const button = document.getElementById("loginButton");
 
-  const {data,error}=await db.auth.signInWithPassword({
-    email,password
-  });
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
 
-  if(error){
-    return message("authMessage",error.message,"error");
+  if (!email || !password) {
+    message("authMessage","Enter your email and password.","error");
+    return;
   }
 
-  currentUser=data.user;
-  await ensureProfile();
-  await showDashboard();
+  button.disabled = true;
+  button.textContent = "Logging In...";
+
+  try {
+    const {data,error} = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    currentUser = data.user;
+
+    await ensureProfile();
+    updateNavigation();
+    await showDashboard();
+
+    message("authMessage","You are now logged in.","success");
+
+  } catch(error) {
+    message(
+      "authMessage",
+      error.message || "Login failed. Check your details.",
+      "error"
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "Login";
+  }
 }
 
-async function ensureProfile(){
-  if(!currentUser)return;
+async function ensureProfile(name,phone) {
+  if (!currentUser) return;
 
-  const {data,error}=await db.from("profiles")
+  const {data,error} = await db
+    .from("profiles")
     .select("id")
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  if(error)throw error;
+  if (error) throw error;
 
-  if(!data){
-    const {error:insertError}=await db.from("profiles").insert({
-      id:currentUser.id,
-      full_name:currentUser.user_metadata?.full_name || "User",
-      phone:currentUser.user_metadata?.phone || ""
-    });
-    if(insertError)throw insertError;
+  if (!data) {
+    const {error:insertError} = await db
+      .from("profiles")
+      .insert({
+        id:currentUser.id,
+        full_name:name || currentUser.user_metadata?.full_name || "Member",
+        phone:phone || currentUser.user_metadata?.phone || ""
+      });
+
+    if (insertError) throw insertError;
   }
 }
 
-async function showDashboard(){
-  if(!currentUser)return;
+async function openDashboard() {
+  if (!requireLogin()) return;
+  await showDashboard();
+}
 
-  document.getElementById("welcome").textContent=
-    "Welcome, "+(
-      currentUser.user_metadata?.full_name || currentUser.email
-    );
+async function showDashboard() {
+  if (!currentUser) {
+    showAccount();
+    return;
+  }
 
+  document.getElementById("welcome").textContent =
+    "Welcome, " +
+    (currentUser.user_metadata?.full_name || currentUser.email || "Member");
+
+  updateNavigation();
   show("dashboard");
   await loadSurveys();
 }
 
-async function loadSurveys(){
-  const list=document.getElementById("surveyList");
-  list.textContent="Loading surveys...";
+async function loadSurveys() {
+  if (!requireLogin()) return;
 
-  const {data,error}=await db.from("surveys")
-    .select("id,title,description,category,access_fee")
-    .eq("published",true)
-    .order("created_at");
+  const list = document.getElementById("surveyList");
+  list.textContent = "Loading member content...";
 
-  if(error){
-    list.textContent=error.message;
-    return;
+  try {
+    const {data,error} = await db
+      .from("surveys")
+      .select("id,title,description,category,access_fee")
+      .eq("published",true)
+      .order("created_at");
+
+    if (error) throw error;
+
+    list.replaceChildren();
+
+    if (!data || data.length === 0) {
+      list.textContent = "There is currently no published member content.";
+      return;
+    }
+
+    data.forEach(survey => {
+      const box = document.createElement("div");
+      box.className = "survey";
+
+      const title = document.createElement("h3");
+      title.textContent = survey.title;
+
+      const description = document.createElement("p");
+      description.textContent = survey.description || "Member questionnaire";
+
+      const category = document.createElement("p");
+      category.className = "muted";
+      category.textContent = "Category: " + (survey.category || "Health");
+
+      const fee = document.createElement("p");
+      fee.textContent = "Access Fee: KSh 100";
+      fee.style.color = "var(--blue)";
+      fee.style.fontWeight = "bold";
+
+      const button = document.createElement("button");
+      button.textContent = "Continue";
+      button.onclick = () => openSurvey(survey);
+
+      box.append(title,description,category,fee,button);
+      list.appendChild(box);
+    });
+
+  } catch(error) {
+    list.textContent = "Could not load member content: " + error.message;
   }
-
-  list.replaceChildren();
-
-  if(!data || data.length===0){
-    list.textContent="No surveys are currently available.";
-    return;
-  }
-
-  data.forEach(survey=>{
-    const box=document.createElement("div");
-    box.className="survey";
-
-    const title=document.createElement("h3");
-    title.textContent=survey.title;
-
-    const description=document.createElement("p");
-    description.textContent=survey.description || "Health questionnaire";
-
-    const category=document.createElement("p");
-    category.className="muted";
-    category.textContent="Category: "+(survey.category || "Health");
-
-    const fee=document.createElement("p");
-    fee.className="green";
-    fee.textContent="Access fee: KSh 100";
-
-    const reference=document.createElement("p");
-    reference.className="muted";
-    reference.textContent=
-      "Reference value: KSh 250. Not participant earnings.";
-
-    const btn=document.createElement("button");
-    btn.textContent="View / Unlock survey";
-    btn.onclick=()=>openSurvey(survey);
-
-    box.append(title,description,category,fee,reference,btn);
-    list.appendChild(box);
-  });
 }
 
-async function openSurvey(survey){
-  if(!currentUser){
-    show("account");
-    return;
+async function openSurvey(survey) {
+  if (!requireLogin()) return;
+
+  selectedSurvey = survey;
+
+  try {
+    const {data,error} = await db
+      .from("payments")
+      .select("id")
+      .eq("user_id",currentUser.id)
+      .eq("survey_id",survey.id)
+      .eq("status","confirmed")
+      .limit(1);
+
+    if (error) throw error;
+
+    if (data && data.length > 0) {
+      await loadQuestions(survey);
+      return;
+    }
+
+    document.getElementById("paymentDetails").textContent =
+      "Selected questionnaire: " + survey.title +
+      ". Access fee: KSh 100.";
+
+    document.getElementById("paymentPhone").value = "";
+    document.getElementById("receipt").value = "";
+
+    message("paymentMessage","");
+    show("payment");
+
+  } catch(error) {
+    alert("Could not check access: " + error.message);
   }
-
-  selectedSurvey=survey;
-
-  const {data,error}=await db.from("payments")
-    .select("id")
-    .eq("user_id",currentUser.id)
-    .eq("survey_id",survey.id)
-    .eq("status","confirmed")
-    .limit(1);
-
-  if(error){
-    alert(error.message);
-    return;
-  }
-
-  if(data && data.length>0){
-    await loadQuestions(survey);
-    return;
-  }
-
-  document.getElementById("paymentDetails").textContent=
-    "Selected survey: "+survey.title+
-    ". A separate KSh 100 access payment is required.";
-
-  document.getElementById("paymentPhone").value="";
-  document.getElementById("receipt").value="";
-  message("paymentMessage","");
-  show("payment");
 }
 
-async function submitPayment(){
-  if(!currentUser || !selectedSurvey){
-    return message("paymentMessage","Log in and select a survey first.","error");
+async function submitPayment() {
+  if (!requireLogin() || !selectedSurvey) return;
+
+  const button = document.getElementById("paymentButton");
+
+  const phone = document.getElementById("paymentPhone").value.trim();
+  const receipt = document.getElementById("receipt").value.trim();
+
+  if (!phone || !receipt) {
+    message("paymentMessage","Enter your phone number and transaction code.","error");
+    return;
   }
 
-  const phone=document.getElementById("paymentPhone").value.trim();
-  const receipt=document.getElementById("receipt").value.trim();
+  button.disabled = true;
 
-  if(!phone || !receipt){
-    return message("paymentMessage","Enter your phone number and transaction code.","error");
-  }
+  try {
+    const {data:existing,error:checkError} = await db
+      .from("payments")
+      .select("id")
+      .eq("user_id",currentUser.id)
+      .eq("survey_id",selectedSurvey.id)
+      .eq("status","pending")
+      .limit(1);
 
-  const {data:existing,error:checkError}=await db.from("payments")
-    .select("id")
-    .eq("user_id",currentUser.id)
-    .eq("survey_id",selectedSurvey.id)
-    .eq("status","pending")
-    .limit(1);
+    if (checkError) throw checkError;
 
-  if(checkError){
-    return message("paymentMessage",checkError.message,"error");
-  }
+    if (existing && existing.length) {
+      message(
+        "paymentMessage",
+        "You already have a pending payment. Please wait for verification."
+      );
+      return;
+    }
 
-  if(existing && existing.length){
-    return message(
+    const {error} = await db.from("payments").insert({
+      user_id:currentUser.id,
+      survey_id:selectedSurvey.id,
+      amount:100,
+      phone:phone,
+      mpesa_receipt:receipt,
+      status:"pending"
+    });
+
+    if (error) throw error;
+
+    message(
       "paymentMessage",
-      "You already have a pending payment for this survey. Please wait for verification.",
-      "muted"
+      "Your transaction code has been submitted. An administrator must verify the payment before access is granted.",
+      "success"
     );
+
+  } catch(error) {
+    message(
+      "paymentMessage",
+      error.message || "Could not submit payment details.",
+      "error"
+    );
+  } finally {
+    button.disabled = false;
   }
-
-  const {error}=await db.from("payments").insert({
-    user_id:currentUser.id,
-    survey_id:selectedSurvey.id,
-    amount:100,
-    phone:phone,
-    mpesa_receipt:receipt,
-    status:"pending"
-  });
-
-  if(error){
-    return message("paymentMessage",error.message,"error");
-  }
-
-  message(
-    "paymentMessage",
-    "Your transaction code has been submitted. Survey access will be granted only after the administrator verifies the payment.",
-    "success"
-  );
 }
 
-async function loadQuestions(survey){
+async function loadQuestions(survey) {
+  if (!requireLogin()) return;
+
   show("questions");
-  document.getElementById("questionTitle").textContent=survey.title;
 
-  const list=document.getElementById("questionList");
-  list.textContent="Loading questions...";
+  document.getElementById("questionTitle").textContent = survey.title;
 
-  const {data,error}=await db.from("questions")
-    .select("id,question_text,question_type,options")
-    .eq("survey_id",survey.id);
+  const list = document.getElementById("questionList");
+  list.textContent = "Loading questions...";
 
-  if(error){
-    list.textContent=error.message;
-    return;
-  }
+  try {
+    const {data,error} = await db
+      .from("questions")
+      .select("id,question_text,question_type,options")
+      .eq("survey_id",survey.id);
 
-  list.replaceChildren();
+    if (error) throw error;
 
-  if(!data || !data.length){
-    list.textContent="No questions have been added yet.";
-    return;
-  }
+    list.replaceChildren();
 
-  data.forEach(question=>{
-    const box=document.createElement("div");
-    box.className="survey";
-
-    const title=document.createElement("p");
-    title.textContent=question.question_text;
-
-    let answer;
-
-    if(question.question_type==="multiple_choice" &&
-       Array.isArray(question.options)){
-      answer=document.createElement("select");
-      const placeholder=document.createElement("option");
-      placeholder.value="";
-      placeholder.textContent="Choose an answer";
-      answer.appendChild(placeholder);
-
-      question.options.forEach(option=>{
-        const opt=document.createElement("option");
-        opt.value=option;
-        opt.textContent=option;
-        answer.appendChild(opt);
-      });
-    }else{
-      answer=document.createElement("textarea");
-      answer.placeholder="Type your answer";
+    if (!data || !data.length) {
+      list.textContent = "No questions have been added yet.";
+      return;
     }
 
-    const save=document.createElement("button");
-    save.textContent="Submit answer";
+    data.forEach(question => {
+      const box = document.createElement("div");
+      box.className = "survey";
 
-    save.onclick=async()=>{
-      const value=answer.value.trim();
-      if(!value)return alert("Please enter an answer.");
+      const title = document.createElement("p");
+      title.textContent = question.question_text;
 
-      save.disabled=true;
+      let answer;
 
-      const {error}=await db.from("responses").insert({
-        user_id:currentUser.id,
-        survey_id:survey.id,
-        question_id:question.id,
-        answer:value
-      });
+      if (
+        question.question_type === "multiple_choice" &&
+        Array.isArray(question.options)
+      ) {
+        answer = document.createElement("select");
 
-      save.disabled=false;
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Choose an answer";
+        answer.appendChild(placeholder);
 
-      if(error){
-        alert(error.message);
-      }else{
-        answer.disabled=true;
-        save.textContent="Answer submitted";
+        question.options.forEach(option => {
+          const opt = document.createElement("option");
+          opt.value = option;
+          opt.textContent = option;
+          answer.appendChild(opt);
+        });
+
+      } else {
+        answer = document.createElement("textarea");
+        answer.placeholder = "Type your answer";
       }
-    };
 
-    box.append(title,answer,save);
-    list.appendChild(box);
-  });
+      const save = document.createElement("button");
+      save.textContent = "Submit Answer";
+
+      save.onclick = async () => {
+        const value = answer.value.trim();
+
+        if (!value) {
+          alert("Please enter an answer.");
+          return;
+        }
+
+        save.disabled = true;
+
+        const {error:saveError} = await db
+          .from("responses")
+          .insert({
+            user_id:currentUser.id,
+            survey_id:survey.id,
+            question_id:question.id,
+            answer:value
+          });
+
+        save.disabled = false;
+
+        if (saveError) {
+          alert(saveError.message);
+        } else {
+          answer.disabled = true;
+          save.textContent = "Answer Submitted";
+        }
+      };
+
+      box.append(title,answer,save);
+      list.appendChild(box);
+    });
+
+  } catch(error) {
+    list.textContent = "Questions could not be loaded: " + error.message;
+  }
 }
 
-async function logout(){
+async function logout() {
   await db.auth.signOut();
-  currentUser=null;
-  selectedSurvey=null;
-  show("home");
+
+  currentUser = null;
+  selectedSurvey = null;
+
+  updateNavigation();
+  showHome();
 }
 
-async function restoreSession(){
-  const {data,error}=await db.auth.getSession();
+async function restoreSession() {
+  try {
+    const {data,error} = await db.auth.getSession();
 
-  if(error){
-    console.error(error);
-    return;
-  }
+    if (error) throw error;
 
-  if(data.session){
-    currentUser=data.session.user;
-    try{
+    if (data.session) {
+      currentUser = data.session.user;
       await ensureProfile();
+      updateNavigation();
       await showDashboard();
-    }catch(error){
-      console.error(error);
-      alert("Could not load your profile: "+error.message);
+    } else {
+      currentUser = null;
+      updateNavigation();
+      showHome();
     }
+
+  } catch(error) {
+    console.error(error);
+    currentUser = null;
+    updateNavigation();
+    showHome();
   }
 }
 
-db.auth.onAuthStateChange((event,session)=>{
-  if(event==="SIGNED_OUT"){
-    currentUser=null;
-    show("home");
+db.auth.onAuthStateChange((event,session) => {
+  if (event === "SIGNED_OUT") {
+    currentUser = null;
+    selectedSurvey = null;
+    updateNavigation();
+    showHome();
   }
 });
 
 restoreSession();
 </script>
+
 </body>
 </html>
