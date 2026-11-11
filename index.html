@@ -3,179 +3,261 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kenya Health Sector | Health Research</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0755a5">
+<title>Kenya Health Sector</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root {
+:root{
   --red:#d71935;
   --blue:#0755a5;
   --dark:#10243b;
   --light:#f3f7fc;
   --white:#fff;
-  --muted:#66758a;
+  --muted:#68778b;
   --border:#e1e8f0;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
-  color:var(--dark);
   background:var(--light);
+  color:var(--dark);
 }
 header{
   background:white;
   border-bottom:1px solid var(--border);
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
 }
 .nav{
   max-width:1150px;
   margin:auto;
-  padding:13px 18px;
+  padding:12px 16px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
+  gap:10px;
 }
 .brand{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:9px;
   font-weight:800;
   color:var(--blue);
-  font-size:17px;
+  font-size:15px;
 }
 .logo{
-  width:43px;height:43px;
-  border-radius:12px;
+  width:43px;
+  height:43px;
   background:#edf4ff;
+  border-radius:12px;
   display:grid;
   place-items:center;
 }
-.logo svg{width:34px;height:34px}
-.nav-actions{display:flex;gap:8px;flex-wrap:wrap}
-button,.btn{
+.logo svg{width:35px;height:35px}
+.nav-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+button{
   border:0;
   border-radius:8px;
-  padding:11px 16px;
+  padding:11px 15px;
   font-weight:700;
-  cursor:pointer;
   font-size:14px;
+  cursor:pointer;
 }
+button:disabled{opacity:.5;cursor:not-allowed}
 .primary{background:var(--red);color:white}
 .secondary{background:var(--blue);color:white}
 .outline{background:white;color:var(--blue);border:1px solid var(--blue)}
-button:disabled{opacity:.55;cursor:not-allowed}
-main{max-width:1150px;margin:auto;padding:25px 18px 60px}
+main{
+  max-width:1150px;
+  margin:auto;
+  padding:25px 17px 55px;
+}
+.hidden{display:none!important}
 .hero{
   background:linear-gradient(115deg,#064b91,#0876c9);
-  border-radius:20px;
-  padding:45px 35px;
+  border-radius:19px;
+  padding:40px 30px;
   color:white;
   display:grid;
-  grid-template-columns:1.4fr .8fr;
+  grid-template-columns:1.5fr .8fr;
   gap:20px;
   align-items:center;
 }
-.hero h1{font-size:clamp(30px,5vw,48px);margin:0 0 15px;line-height:1.12}
-.hero p{line-height:1.7;max-width:620px;color:#e8f3ff}
+.hero h1{
+  font-size:clamp(30px,5vw,48px);
+  line-height:1.12;
+  margin:12px 0;
+}
+.hero p{line-height:1.7;color:#e7f2ff}
 .hero-art{
-  background:#ffffff16;
-  border:1px solid #ffffff35;
-  border-radius:20px;
+  background:#ffffff18;
+  border:1px solid #ffffff40;
   padding:25px;
+  border-radius:18px;
   text-align:center;
 }
-.hero-art svg{width:150px;max-width:100%}
-.section{margin-top:38px}
-.section h2{font-size:25px;margin:0 0 12px}
+.hero-art svg{width:140px;max-width:100%}
+.topline{
+  color:var(--red);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+.section{margin-top:35px}
+.section h2{margin:0 0 12px;font-size:25px}
 .muted{color:var(--muted);line-height:1.65}
 .grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
 }
 .card{
   background:white;
   border:1px solid var(--border);
   border-radius:14px;
-  padding:21px;
+  padding:20px;
   box-shadow:0 5px 18px #172b4d08;
 }
 .card h3{margin:10px 0}
 .card-icon{
-  width:43px;height:43px;
-  display:grid;place-items:center;
-  border-radius:12px;
+  width:43px;
+  height:43px;
   background:#edf4ff;
-  color:var(--blue);
+  border-radius:12px;
+  display:grid;
+  place-items:center;
   font-size:22px;
 }
 .steps{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:13px;
+  gap:12px;
 }
 .step-number{
-  width:34px;height:34px;border-radius:50%;
-  background:#fff0f1;color:var(--red);
-  display:grid;place-items:center;font-weight:800;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#fff0f1;
+  color:var(--red);
+  font-weight:800;
 }
 .panel{
-  background:white;border:1px solid var(--border);
-  padding:23px;border-radius:15px;
-  max-width:600px;margin:20px auto;
-}
-.panel h2{margin-top:0}
-label{display:block;font-weight:700;font-size:13px;margin:13px 0 6px}
-input,select,textarea{
-  width:100%;padding:13px;
-  border:1px solid #ccd7e4;
-  border-radius:8px;font:inherit;
+  max-width:650px;
+  margin:20px auto;
+  padding:23px;
   background:white;
+  border:1px solid var(--border);
+  border-radius:15px;
+}
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin:13px 0 6px;
+}
+input,select,textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #ccd7e4;
+  border-radius:8px;
+  background:white;
+  font:inherit;
+  color:var(--dark);
 }
 textarea{min-height:90px;resize:vertical}
 .form-button{width:100%;margin-top:17px}
-.small{font-size:12px;color:var(--muted);line-height:1.6}
 .notice{
-  padding:13px;border-radius:9px;
-  background:#edf4ff;color:#174b82;
-  margin:12px 0;line-height:1.5;font-size:13px;
+  padding:13px;
+  border-radius:9px;
+  background:#edf4ff;
+  color:#174b82;
+  margin:12px 0;
+  font-size:13px;
+  line-height:1.6;
 }
 .error{background:#fff0f0;color:#a51225}
 .success{background:#eaf8ef;color:#176b37}
-.hidden{display:none!important}
+.small{font-size:12px;color:var(--muted);line-height:1.6}
 .badge{
-  display:inline-block;padding:5px 9px;
-  background:#edf4ff;color:var(--blue);
-  border-radius:20px;font-size:11px;font-weight:700;
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  background:#edf4ff;
+  color:var(--blue);
+  font-size:11px;
+  font-weight:700;
 }
-.survey-card{display:flex;flex-direction:column;gap:10px}
+.survey-card{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 .survey-card button{margin-top:auto}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
 .question{
-  padding:17px 0;border-bottom:1px solid var(--border)
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
 }
-.question label{font-size:15px}
-.question-option{display:flex;align-items:center;gap:9px;margin:9px 0}
-.question-option input{width:auto}
+.question-title{
+  display:block;
+  font-weight:700;
+  margin-bottom:10px;
+  line-height:1.5;
+}
+.option{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:10px 0;
+  font-weight:400;
+}
+.option input{width:auto}
+.payment-box{
+  border:2px solid #087747;
+  border-radius:12px;
+  padding:18px;
+  margin:15px 0;
+}
+.payment-number{
+  font-size:24px;
+  color:#087747;
+  font-weight:800;
+}
+.admin-item{
+  border:1px solid var(--border);
+  padding:13px;
+  border-radius:10px;
+  margin:12px 0;
+  overflow-wrap:anywhere;
+}
 footer{
-  background:#10243b;color:#dce7f5;
-  padding:30px 18px;text-align:center;
-  line-height:1.7;font-size:13px;
+  background:#10243b;
+  color:#dce7f5;
+  text-align:center;
+  padding:28px 15px;
+  font-size:13px;
+  line-height:1.8;
 }
 footer strong{color:white}
-.topline{color:var(--red);font-size:12px;font-weight:800;letter-spacing:1px}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+a{color:var(--blue)}
 @media(max-width:760px){
-  .hero{grid-template-columns:1fr;padding:30px 22px}
+  .hero{grid-template-columns:1fr;padding:28px 20px}
   .hero-art{display:none}
   .grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr}
+  .brand{font-size:12px}
   .nav{align-items:flex-start}
-  .brand{font-size:14px}
-  .nav-actions button{padding:9px 10px;font-size:12px}
+  .nav-actions button{font-size:11px;padding:9px}
 }
 @media(max-width:420px){
   .steps{grid-template-columns:1fr}
@@ -184,290 +266,387 @@ footer strong{color:white}
 </head>
 
 <body>
+
 <header>
-  <div class="nav">
-    <div class="brand">
-      <div class="logo">
-        <svg viewBox="0 0 100 100" fill="none" aria-label="Medical logo">
-          <path d="M42 10h16v28h28v16H58v28H42V54H14V38h28z" fill="#d71935"/>
-          <path d="M72 65c0 15-9 23-21 23S30 80 30 65" stroke="#0755a5" stroke-width="6" stroke-linecap="round"/>
-          <circle cx="30" cy="65" r="5" fill="#0755a5"/>
-          <circle cx="72" cy="65" r="5" fill="#0755a5"/>
-        </svg>
-      </div>
-      <span>KENYA HEALTH SECTOR</span>
+<div class="nav">
+  <div class="brand">
+    <div class="logo">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M42 10h16v28h28v16H58v28H42V54H14V38h28z" fill="#d71935"/>
+        <path d="M30 64c0 17 10 25 22 25s22-8 22-25" stroke="#0755a5" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="30" cy="64" r="5" fill="#0755a5"/>
+        <circle cx="74" cy="64" r="5" fill="#0755a5"/>
+      </svg>
     </div>
-    <div class="nav-actions">
-      <button class="outline" id="navLogin" onclick="showPage('login')">Login</button>
-      <button class="primary" id="navRegister" onclick="showPage('register')">Create Account</button>
-      <button class="outline hidden" id="navDashboard" onclick="showPage('dashboard')">Dashboard</button>
-      <button class="outline hidden" id="navLogout" onclick="logout()">Logout</button>
-    </div>
+    <span>KENYA HEALTH SECTOR</span>
   </div>
+
+  <div class="nav-actions">
+    <button class="outline" id="navLogin" onclick="showPage('login')">Login</button>
+    <button class="primary" id="navRegister" onclick="showPage('register')">Create Account</button>
+    <button class="outline hidden" id="navDashboard" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="outline hidden" id="navLogout" onclick="logout()">Logout</button>
+  </div>
+</div>
 </header>
 
 <main>
-  <!-- PUBLIC HOMEPAGE -->
-  <section id="homePage">
-    <div class="hero">
-      <div>
-        <div class="topline" style="color:#ffd9df">HEALTH RESEARCH • KENYA</div>
-        <h1>Have a voice in the future of healthcare.</h1>
-        <p>
-          Join our online health research community and share your views
-          through questionnaires about healthcare awareness, public health
-          and community experiences.
-        </p>
-        <div class="actions">
-          <button class="primary" onclick="showPage('register')">Create Your Account</button>
-          <button class="outline" onclick="showPage('login')">Member Login</button>
-        </div>
-      </div>
-      <div class="hero-art">
-        <svg viewBox="0 0 200 180" fill="none">
-          <rect x="35" y="22" width="130" height="130" rx="24" fill="white"/>
-          <path d="M90 45h20v29h29v20h-29v29H90V94H61V74h29z" fill="#d71935"/>
-          <path d="M54 139h92" stroke="#0755a5" stroke-width="8" stroke-linecap="round"/>
-          <circle cx="100" cy="154" r="9" fill="#d71935"/>
-        </svg>
-        <h3>Better health through informed research</h3>
-        <p class="small" style="color:#eaf4ff">Share your perspective. Support better understanding.</p>
-      </div>
-    </div>
 
-    <section class="section">
-      <h2>Welcome to Kenya Health Sector</h2>
-      <p class="muted">
-        We provide an online platform for people to participate in health-related
-        questionnaires. Survey participation is subject to eligibility and
-        availability.
+<!-- HOMEPAGE -->
+<section id="homePage">
+  <div class="hero">
+    <div>
+      <div class="topline" style="color:#ffd9df">HEALTH RESEARCH • KENYA</div>
+      <h1>Have a voice in the future of healthcare.</h1>
+      <p>
+        Join our online health research community and share your views
+        through questionnaires about healthcare awareness, public health
+        and community experiences.
       </p>
-    </section>
-
-    <section class="section">
-      <h2>How it works</h2>
-      <div class="steps">
-        <div class="card">
-          <div class="step-number">1</div>
-          <h3>Create an account</h3>
-          <p class="muted">Register with your details to access the members' area.</p>
-        </div>
-        <div class="card">
-          <div class="step-number">2</div>
-          <h3>View surveys</h3>
-          <p class="muted">Explore available health-related questionnaires after login.</p>
-        </div>
-        <div class="card">
-          <div class="step-number">3</div>
-          <h3>Check access</h3>
-          <p class="muted">Review any access requirements before participating.</p>
-        </div>
-        <div class="card">
-          <div class="step-number">4</div>
-          <h3>Submit answers</h3>
-          <p class="muted">Complete eligible questionnaires and submit your responses.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Our research areas</h2>
-      <div class="grid">
-        <div class="card"><div class="card-icon">♥</div><h3>Public health</h3><p class="muted">Community health awareness and public health topics.</p></div>
-        <div class="card"><div class="card-icon">✚</div><h3>Healthcare access</h3><p class="muted">Experiences and views about accessing health services.</p></div>
-        <div class="card"><div class="card-icon">⚕</div><h3>Health education</h3><p class="muted">Knowledge, information and health education topics.</p></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="card">
-        <h2>Ready to participate?</h2>
-        <p class="muted">Create an account to access the members-only survey area.</p>
-        <button class="primary" onclick="showPage('register')">Get Started</button>
-      </div>
-    </section>
-  </section>
-
-  <!-- REGISTRATION -->
-  <section id="registerPage" class="hidden">
-    <div class="panel">
-      <div class="topline">JOIN OUR COMMUNITY</div>
-      <h2>Create your account</h2>
-      <p class="muted">Register to access available questionnaires.</p>
-      <div id="registerMessage" class="notice hidden"></div>
-      <form id="registerForm">
-        <label>Full name</label>
-        <input id="regName" required maxlength="100" placeholder="Enter your full name">
-        <label>Phone number</label>
-        <input id="regPhone" required placeholder="07XXXXXXXX">
-        <label>Email address</label>
-        <input id="regEmail" type="email" required placeholder="you@example.com">
-        <label>Password</label>
-        <input id="regPassword" type="password" minlength="8" required placeholder="At least 8 characters">
-        <button class="primary form-button" type="submit">Create Account</button>
-      </form>
-      <p class="small">Already registered? <a href="#" onclick="showPage('login')">Login here</a>.</p>
-      <p class="small">By registering, you agree to use the platform responsibly and provide accurate information.</p>
-    </div>
-  </section>
-
-  <!-- LOGIN -->
-  <section id="loginPage" class="hidden">
-    <div class="panel">
-      <div class="topline">MEMBER ACCESS</div>
-      <h2>Welcome back</h2>
-      <p class="muted">Login to access your member dashboard.</p>
-      <div id="loginMessage" class="notice hidden"></div>
-      <form id="loginForm">
-        <label>Email address</label>
-        <input id="loginEmail" type="email" required placeholder="Your email">
-        <label>Password</label>
-        <input id="loginPassword" type="password" required placeholder="Your password">
-        <button class="secondary form-button" type="submit">Login</button>
-      </form>
-      <p class="small">New here? <a href="#" onclick="showPage('register')">Create an account</a>.</p>
-    </div>
-  </section>
-
-  <!-- MEMBER DASHBOARD -->
-  <section id="dashboardPage" class="hidden">
-    <div class="card">
-      <div class="topline">MEMBER AREA</div>
-      <h2 id="welcomeTitle">Your dashboard</h2>
-      <p class="muted">Welcome to your Kenya Health Sector member area.</p>
       <div class="actions">
-        <button class="secondary" onclick="loadSurveys()">Refresh surveys</button>
-        <button class="outline" onclick="showPage('payment')">Payment information</button>
+        <button class="primary" onclick="showPage('register')">Create Your Account</button>
+        <button class="outline" onclick="showPage('login')">Member Login</button>
       </div>
     </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 200 180" fill="none">
+        <rect x="35" y="22" width="130" height="130" rx="24" fill="white"/>
+        <path d="M90 45h20v29h29v20h-29v29H90V94H61V74h29z" fill="#d71935"/>
+        <path d="M54 139h92" stroke="#0755a5" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="100" cy="154" r="9" fill="#d71935"/>
+      </svg>
+      <h3>Better health through informed research</h3>
+      <p class="small" style="color:#eaf4ff">Share your perspective. Support better understanding.</p>
+    </div>
+  </div>
 
-    <section class="section">
-      <h2>Available surveys</h2>
-      <p class="muted">Only surveys published by the platform administrator appear here.</p>
-      <div id="surveyMessage" class="notice hidden"></div>
-      <div id="surveyList" class="grid">
-        <div class="card">Loading surveys...</div>
-      </div>
-    </section>
+  <section class="section">
+    <h2>Welcome to Kenya Health Sector</h2>
+    <p class="muted">
+      An online platform for health-related questionnaires and community
+      research. Participation is subject to survey availability and eligibility.
+    </p>
+  </section>
 
-    <section id="adminSection" class="section hidden">
+  <section class="section">
+    <h2>How it works</h2>
+    <div class="steps">
       <div class="card">
-        <div class="topline">ADMINISTRATION</div>
-        <h2>Admin dashboard</h2>
-        <p class="muted">Create surveys and review submitted payment references.</p>
-        <h3>Create a survey</h3>
-        <form id="createSurveyForm">
-          <label>Survey title</label>
-          <input id="surveyTitle" required>
-          <label>Description</label>
-          <textarea id="surveyDescription" required></textarea>
-          <label>Category</label>
-          <input id="surveyCategory" placeholder="e.g. Public health">
-          <button class="secondary form-button" type="submit">Create survey</button>
-        </form>
-        <div id="adminMessage" class="notice hidden"></div>
+        <div class="step-number">1</div>
+        <h3>Create an account</h3>
+        <p class="muted">Register to access the members' area.</p>
       </div>
-      <div class="card" style="margin-top:16px">
-        <h3>Pending payment reviews</h3>
-        <button class="outline" onclick="loadPendingPayments()">Refresh payments</button>
-        <div id="pendingPayments" style="margin-top:14px">Select refresh to load payment requests.</div>
+      <div class="card">
+        <div class="step-number">2</div>
+        <h3>View surveys</h3>
+        <p class="muted">Explore available health questionnaires.</p>
       </div>
-    </section>
-  </section>
-
-  <!-- PAYMENT DETAILS -->
-  <section id="paymentPage" class="hidden">
-    <div class="panel">
-      <div class="topline">SURVEY ACCESS</div>
-      <h2>Payment information</h2>
-      <p class="muted">
-        The current survey access fee is KSh 100 per survey where a fee applies.
-        Check the survey details before making any payment.
-      </p>
-      <div class="notice">
-        M-Pesa Pochi la Biashara: <strong>0718282275</strong><br>
-        Business label: <strong>E Commerce</strong><br>
-        Registered recipient name: <strong>Maureen Bwire</strong><br>
-        Amount: <strong>KSh 100</strong>
+      <div class="card">
+        <div class="step-number">3</div>
+        <h3>Check access</h3>
+        <p class="muted">Review the access requirements before participating.</p>
       </div>
-      <p class="small">
-        Confirm the recipient name and amount on your M-Pesa screen before
-        sending money. Do not pay if the details shown do not match.
-        Payment is not automatically confirmed by this website.
-      </p>
-      <form id="paymentForm">
-        <label>Select survey</label>
-        <select id="paymentSurvey" required></select>
-        <label>Your M-Pesa phone number</label>
-        <input id="paymentPhone" required placeholder="07XXXXXXXX">
-        <label>M-Pesa transaction code</label>
-        <input id="paymentReceipt" required maxlength="30" placeholder="Enter the transaction code">
-        <button class="primary form-button" type="submit">Submit payment reference</button>
-      </form>
-      <div id="paymentMessage" class="notice hidden"></div>
-      <p class="small">Your payment request will remain pending until it is checked by an administrator.</p>
-      <button class="outline" onclick="showPage('dashboard')">Back to dashboard</button>
+      <div class="card">
+        <div class="step-number">4</div>
+        <h3>Submit answers</h3>
+        <p class="muted">Complete and submit eligible questionnaires.</p>
+      </div>
     </div>
   </section>
 
-  <!-- QUESTIONNAIRE -->
-  <section id="questionPage" class="hidden">
+  <section class="section">
+    <h2>Our research areas</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">♥</div>
+        <h3>Public health</h3>
+        <p class="muted">Community health awareness and public health topics.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✚</div>
+        <h3>Healthcare access</h3>
+        <p class="muted">Experiences and views about accessing health services.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚕</div>
+        <h3>Health education</h3>
+        <p class="muted">Knowledge, information and health education topics.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="card">
-      <div class="topline">HEALTH QUESTIONNAIRE</div>
-      <h2 id="questionSurveyTitle">Survey</h2>
-      <p class="muted" id="questionSurveyDescription"></p>
-      <div id="questionMessage" class="notice hidden"></div>
-      <form id="questionForm">
-        <div id="questionList"></div>
-        <button class="primary form-button" type="submit">Submit answers</button>
-      </form>
-      <button class="outline" style="margin-top:12px" onclick="showPage('dashboard')">Back to surveys</button>
+      <h2>Ready to participate?</h2>
+      <p class="muted">Create an account to access the members-only survey area.</p>
+      <button class="primary" onclick="showPage('register')">Get Started</button>
+    </div>
+  </section>
+</section>
+
+<!-- REGISTER -->
+<section id="registerPage" class="hidden">
+  <div class="panel">
+    <div class="topline">JOIN OUR COMMUNITY</div>
+    <h2>Create your account</h2>
+    <p class="muted">Register to access available questionnaires.</p>
+    <div id="registerMessage" class="notice hidden"></div>
+
+    <form id="registerForm">
+      <label>Full name</label>
+      <input id="regName" required maxlength="100" placeholder="Enter your full name">
+
+      <label>Phone number</label>
+      <input id="regPhone" required placeholder="07XXXXXXXX">
+
+      <label>Email address</label>
+      <input id="regEmail" type="email" required placeholder="you@example.com">
+
+      <label>Password</label>
+      <input id="regPassword" type="password" minlength="8" required placeholder="At least 8 characters">
+
+      <button class="primary form-button" type="submit">Create Account</button>
+    </form>
+
+    <p class="small">Already registered? <a href="#" onclick="showPage('login');return false">Login here</a>.</p>
+    <p class="small">By registering, you agree to use the platform responsibly and provide accurate information.</p>
+  </div>
+</section>
+
+<!-- LOGIN -->
+<section id="loginPage" class="hidden">
+  <div class="panel">
+    <div class="topline">MEMBER ACCESS</div>
+    <h2>Welcome back</h2>
+    <p class="muted">Login to access your member dashboard.</p>
+    <div id="loginMessage" class="notice hidden"></div>
+
+    <form id="loginForm">
+      <label>Email address</label>
+      <input id="loginEmail" type="email" required placeholder="Your email">
+
+      <label>Password</label>
+      <input id="loginPassword" type="password" required placeholder="Your password">
+
+      <button class="secondary form-button" type="submit">Login</button>
+    </form>
+    <p class="small">New here? <a href="#" onclick="showPage('register');return false">Create an account</a>.</p>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboardPage" class="hidden">
+  <div class="card">
+    <div class="topline">MEMBER AREA</div>
+    <h2 id="welcomeTitle">Your dashboard</h2>
+    <p class="muted">Welcome to your Kenya Health Sector member area.</p>
+    <div class="actions">
+      <button class="secondary" onclick="loadSurveys()">Refresh surveys</button>
+      <button class="outline" onclick="showPage('payment')">Payment information</button>
+    </div>
+  </div>
+
+  <section class="section">
+    <h2>Available surveys</h2>
+    <p class="muted">Published questionnaires appear here.</p>
+    <div id="surveyMessage" class="notice hidden"></div>
+    <div id="surveyList" class="grid">
+      <div class="card">Loading surveys...</div>
     </div>
   </section>
 
-  <!-- PRIVACY -->
-  <section id="privacyPage" class="hidden">
-    <div class="panel">
-      <h2>Privacy and responsible participation</h2>
-      <p class="muted">
-        We request account information to operate the platform and associate
-        survey responses with member accounts. Do not submit passwords,
-        identification numbers or unnecessary sensitive medical information
-        in survey answers.
-      </p>
-      <p class="muted">
-        Survey participation should be voluntary. Read each questionnaire
-        before answering. If a survey requests sensitive health information,
-        its purpose and handling should be explained before participation.
-      </p>
-      <button class="outline" onclick="showPage('home')">Back home</button>
+  <!-- ADMIN -->
+  <section id="adminSection" class="section hidden">
+    <div class="card">
+      <div class="topline">ADMINISTRATION</div>
+      <h2>Admin dashboard</h2>
+      <p class="muted">Create and manage health questionnaires.</p>
+
+      <h3>Create a survey</h3>
+      <form id="createSurveyForm">
+        <label>Survey title</label>
+        <input id="surveyTitle" required>
+
+        <label>Description</label>
+        <textarea id="surveyDescription" required></textarea>
+
+        <label>Category</label>
+        <input id="surveyCategory" placeholder="e.g. Public health">
+
+        <button class="secondary form-button" type="submit">Create survey draft</button>
+      </form>
+      <div id="adminMessage" class="notice hidden"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Add questions to a survey</h3>
+      <form id="addQuestionForm">
+        <label>Select survey</label>
+        <select id="adminSurveySelect" required></select>
+
+        <label>Question</label>
+        <textarea id="adminQuestionText" required></textarea>
+
+        <label>Question type</label>
+        <select id="adminQuestionType" required>
+          <option value="short_text">Short text</option>
+          <option value="long_text">Long text</option>
+          <option value="date">Date</option>
+          <option value="single_choice">Single choice</option>
+          <option value="multiple_choice">Multiple choice</option>
+          <option value="yes_no">Yes / No</option>
+        </select>
+
+        <label>Options (one option per line, for choice questions)</label>
+        <textarea id="adminQuestionOptions" placeholder="Option 1&#10;Option 2&#10;Option 3"></textarea>
+
+        <button class="secondary form-button" type="submit">Add question</button>
+      </form>
+      <div id="questionAdminMessage" class="notice hidden"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Manage surveys</h3>
+      <button class="outline" onclick="loadAdminSurveys()">Refresh surveys</button>
+      <div id="adminSurveyList"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Pending payment references</h3>
+      <button class="outline" onclick="loadPendingPayments()">Refresh payments</button>
+      <div id="pendingPayments" style="margin-top:14px">Select refresh to load payment requests.</div>
     </div>
   </section>
+</section>
+
+<!-- PAYMENT -->
+<section id="paymentPage" class="hidden">
+  <div class="panel">
+    <div class="topline">SURVEY ACCESS PAYMENT</div>
+    <h2>M-Pesa Pochi la Biashara</h2>
+    <p class="muted">The only payment method currently available on this website.</p>
+
+    <div class="payment-box">
+      <div class="card-icon">📱</div>
+      <h3>M-Pesa Pochi la Biashara</h3>
+      <p class="small">Survey access fee</p>
+      <div class="payment-number">KSh 100</div>
+      <label>Business phone number</label>
+      <div class="actions" style="align-items:center">
+        <input id="displayPaymentNumber" value="0718282275" readonly style="flex:1;min-width:150px">
+        <button type="button" class="secondary" onclick="copyPaymentNumber()">Copy</button>
+      </div>
+      <p><strong>Business label:</strong> E Commerce</p>
+      <p><strong>Registered recipient:</strong> Maureen Bwire</p>
+    </div>
+
+    <div class="notice">
+      <strong>How to pay</strong><br>
+      1. Open your M-Pesa menu.<br>
+      2. Select Pochi la Biashara.<br>
+      3. Enter 0718282275.<br>
+      4. Check the recipient name and amount.<br>
+      5. Complete payment and keep your M-Pesa message.
+    </div>
+
+    <div class="notice error">
+      Confirm the recipient name and amount on your M-Pesa screen before
+      sending money. Do not proceed if the details do not match.
+    </div>
+
+    <h3>Submit your payment reference</h3>
+    <p class="muted">After payment, submit the transaction details below.</p>
+
+    <form id="paymentForm">
+      <label>Select survey</label>
+      <select id="paymentSurvey" required></select>
+
+      <label>Your M-Pesa phone number</label>
+      <input id="paymentPhone" required placeholder="07XXXXXXXX">
+
+      <label>M-Pesa transaction code</label>
+      <input id="paymentReceipt" required maxlength="30" placeholder="Transaction code">
+
+      <button class="primary form-button" type="submit">Submit payment reference</button>
+    </form>
+
+    <div id="paymentMessage" class="notice hidden"></div>
+
+    <p class="small">
+      Submitting a transaction code does not automatically confirm payment.
+      An administrator must verify the actual transaction before access is granted.
+    </p>
+
+    <button class="outline" onclick="showPage('dashboard')">Back to dashboard</button>
+  </div>
+</section>
+
+<!-- QUESTIONNAIRE -->
+<section id="questionPage" class="hidden">
+  <div class="card">
+    <div class="topline">HEALTH QUESTIONNAIRE</div>
+    <h2 id="questionSurveyTitle">Survey</h2>
+    <p class="muted" id="questionSurveyDescription"></p>
+    <div id="questionMessage" class="notice hidden"></div>
+
+    <form id="questionForm">
+      <div id="questionList"></div>
+      <button class="primary form-button" type="submit">Submit answers</button>
+    </form>
+
+    <button class="outline" style="margin-top:12px" onclick="showPage('dashboard')">Back to surveys</button>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section id="privacyPage" class="hidden">
+  <div class="panel">
+    <h2>Privacy and responsible participation</h2>
+    <p class="muted">
+      Account information is used to operate the platform and associate
+      survey responses with member accounts. Do not submit passwords,
+      identification numbers or unnecessary sensitive medical information.
+    </p>
+    <p class="muted">
+      Participation should be voluntary. Read each questionnaire before
+      answering. The purpose and handling of sensitive health information
+      should be explained before collection.
+    </p>
+    <button class="outline" onclick="showPage('home')">Back home</button>
+  </div>
+</section>
+
 </main>
 
 <footer>
   <strong>KENYA HEALTH SECTOR</strong><br>
   Independent online health research and questionnaire platform.<br>
   This is not a government website or a medical service provider.<br>
-  <a href="#" style="color:#fff" onclick="showPage('privacy')">Privacy information</a>
+  <a href="#" style="color:white" onclick="showPage('privacy');return false">Privacy information</a>
 </footer>
 
 <script>
+/* SUPABASE CONFIGURATION */
 const SUPABASE_URL = "https://ykwkrtfhkohpijjctdcj.supabase.co";
 const SUPABASE_KEY = "sb_publishable_DRAUL8NP62CcmWEpZ6iv0w_kbsSfOmI";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const PAYMENT_NUMBER = "0718282275";
+const PAYMENT_AMOUNT = 100;
 
 let currentUser = null;
 let currentProfile = null;
 let selectedSurvey = null;
 let currentQuestions = [];
+let surveysCache = [];
 
 const pages = [
   "homePage","registerPage","loginPage","dashboardPage",
   "paymentPage","questionPage","privacyPage"
 ];
 
-function showMessage(id, message, type="notice"){
+function showMessage(id,message,type="notice"){
   const el=document.getElementById(id);
   el.textContent=message;
   el.className="notice "+type;
@@ -475,17 +654,25 @@ function showMessage(id, message, type="notice"){
 }
 function clearMessage(id){
   const el=document.getElementById(id);
-  if(el){el.textContent="";el.className="notice hidden";}
+  if(el){
+    el.textContent="";
+    el.className="notice hidden";
+  }
 }
 function showPage(name){
   pages.forEach(id=>document.getElementById(id).classList.add("hidden"));
+
   const page=document.getElementById(name+"Page");
   if(!page)return;
-  if((name==="dashboard"||name==="payment"||name==="question")&&!currentUser){
-    showPage("login");return;
+
+  if(["dashboard","payment","question"].includes(name)&&!currentUser){
+    showPage("login");
+    return;
   }
+
   page.classList.remove("hidden");
   window.scrollTo(0,0);
+
   if(name==="dashboard")loadSurveys();
   if(name==="payment")loadPaymentSurveyOptions();
 }
@@ -496,272 +683,467 @@ function updateNavigation(){
   document.getElementById("navDashboard").classList.toggle("hidden",!logged);
   document.getElementById("navLogout").classList.toggle("hidden",!logged);
 }
+function copyPaymentNumber(){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(PAYMENT_NUMBER)
+      .then(()=>alert("Payment number copied."))
+      .catch(()=>alert("Copy manually: "+PAYMENT_NUMBER));
+  }else{
+    alert("Copy manually: "+PAYMENT_NUMBER);
+  }
+}
+
+/* USER PROFILE */
 async function ensureProfile(){
   if(!currentUser)return;
+
   const {data,error}=await db.from("profiles")
-    .select("*").eq("id",currentUser.id).maybeSingle();
+    .select("*")
+    .eq("id",currentUser.id)
+    .maybeSingle();
+
   if(error)throw error;
+
   if(data){
     currentProfile=data;
     return;
   }
+
   const metadata=currentUser.user_metadata||{};
+
   const {data:newProfile,error:insertError}=await db.from("profiles")
     .insert({
       id:currentUser.id,
       full_name:metadata.full_name||currentUser.email,
       phone:metadata.phone||"",
       is_admin:false
-    }).select().single();
+    })
+    .select()
+    .single();
+
   if(insertError)throw insertError;
   currentProfile=newProfile;
 }
+
 async function refreshSession(){
   const {data,error}=await db.auth.getSession();
   if(error)console.error(error);
+
   currentUser=data.session?.user||null;
+  currentProfile=null;
+
   if(currentUser){
-    try{await ensureProfile();}
-    catch(e){console.error("Profile:",e.message);}
-  }else{
-    currentProfile=null;
+    try{
+      await ensureProfile();
+    }catch(err){
+      console.error("Profile error:",err.message);
+    }
   }
+
   updateNavigation();
+
   if(currentUser){
     document.getElementById("welcomeTitle").textContent=
       "Welcome, "+(currentProfile?.full_name||currentUser.email);
-    const admin=!!currentProfile?.is_admin;
-    document.getElementById("adminSection").classList.toggle("hidden",!admin);
+
+    document.getElementById("adminSection")
+      .classList.toggle("hidden",!currentProfile?.is_admin);
   }
 }
+
 db.auth.onAuthStateChange((_event,session)=>{
   currentUser=session?.user||null;
   updateNavigation();
 });
+
+/* REGISTRATION */
 document.getElementById("registerForm").addEventListener("submit",async e=>{
   e.preventDefault();
   clearMessage("registerMessage");
-  const button=e.target.querySelector("button[type=submit]");
-  button.disabled=true;button.textContent="Creating account...";
-  const full_name=document.getElementById("regName").value.trim();
-  const phone=document.getElementById("regPhone").value.trim();
-  const email=document.getElementById("regEmail").value.trim();
-  const password=document.getElementById("regPassword").value;
+
+  const button=e.target.querySelector('button[type="submit"]');
+  button.disabled=true;
+  button.textContent="Creating account...";
+
   try{
+    const full_name=document.getElementById("regName").value.trim();
+    const phone=document.getElementById("regPhone").value.trim();
+    const email=document.getElementById("regEmail").value.trim();
+    const password=document.getElementById("regPassword").value;
+
     const {data,error}=await db.auth.signUp({
-      email,password,
+      email,
+      password,
       options:{data:{full_name,phone}}
     });
+
     if(error)throw error;
+
     if(data.session){
       currentUser=data.session.user;
       await ensureProfile();
-      updateNavigation();
-      showMessage("registerMessage","Your account has been created successfully.","success");
+      await refreshSession();
+      showMessage("registerMessage","Your account has been created.","success");
       showPage("dashboard");
     }else{
-      showMessage("registerMessage","Registration received. Check your email for a confirmation link, then return here and log in.","success");
+      showMessage(
+        "registerMessage",
+        "Registration received. Check your email for the confirmation link, then return and log in.",
+        "success"
+      );
     }
   }catch(err){
     showMessage("registerMessage",err.message,"error");
   }finally{
-    button.disabled=false;button.textContent="Create Account";
+    button.disabled=false;
+    button.textContent="Create Account";
   }
 });
+
+/* LOGIN */
 document.getElementById("loginForm").addEventListener("submit",async e=>{
   e.preventDefault();
   clearMessage("loginMessage");
-  const button=e.target.querySelector("button[type=submit]");
-  button.disabled=true;button.textContent="Logging in...";
+
+  const button=e.target.querySelector('button[type="submit"]');
+  button.disabled=true;
+  button.textContent="Logging in...";
+
   try{
     const {data,error}=await db.auth.signInWithPassword({
       email:document.getElementById("loginEmail").value.trim(),
       password:document.getElementById("loginPassword").value
     });
+
     if(error)throw error;
+
     currentUser=data.user;
-    await ensureProfile();
     await refreshSession();
     showPage("dashboard");
   }catch(err){
     showMessage("loginMessage",err.message,"error");
   }finally{
-    button.disabled=false;button.textContent="Login";
+    button.disabled=false;
+    button.textContent="Login";
   }
 });
+
 async function logout(){
-  await db.auth.signOut();
-  currentUser=null;currentProfile=null;
+  const {error}=await db.auth.signOut();
+  if(error){
+    alert(error.message);
+    return;
+  }
+  currentUser=null;
+  currentProfile=null;
   updateNavigation();
   showPage("home");
 }
+
+/* LOAD SURVEYS */
 async function loadSurveys(){
   if(!currentUser)return;
+
   const list=document.getElementById("surveyList");
   list.innerHTML='<div class="card">Loading surveys...</div>';
   clearMessage("surveyMessage");
+
   try{
     const {data:surveys,error}=await db.from("surveys")
       .select("id,title,description,category,access_fee")
-      .eq("published",true).order("created_at",{ascending:false});
+      .eq("published",true)
+      .order("created_at",{ascending:false});
+
     if(error)throw error;
-    if(!surveys?.length){
-      list.innerHTML='<div class="card">There are currently no published surveys. Please check again later.</div>';
+
+    surveysCache=surveys||[];
+
+    if(!surveysCache.length){
+      list.innerHTML='<div class="card">No published surveys are available yet.</div>';
       return;
     }
+
     const {data:payments,error:paymentError}=await db.from("payments")
-      .select("survey_id,status").eq("user_id",currentUser.id);
+      .select("survey_id,status")
+      .eq("user_id",currentUser.id);
+
     if(paymentError)throw paymentError;
+
     list.innerHTML="";
-    surveys.forEach(survey=>{
-      const payment=payments?.find(p=>p.survey_id===survey.id&&p.status==="confirmed");
-      const pending=payments?.find(p=>p.survey_id===survey.id&&p.status==="pending");
+
+    surveysCache.forEach(survey=>{
+      const payment=(payments||[]).find(p=>
+        p.survey_id===survey.id&&p.status==="confirmed"
+      );
+
+      const pending=(payments||[]).find(p=>
+        p.survey_id===survey.id&&p.status==="pending"
+      );
+
       const card=document.createElement("div");
       card.className="card survey-card";
+
+      const badge=document.createElement("span");
+      badge.className="badge";
+      badge.textContent=survey.category||"Health";
+
       const title=document.createElement("h3");
       title.textContent=survey.title;
+
       const desc=document.createElement("p");
-      desc.className="muted";desc.textContent=survey.description||"Health questionnaire";
-      const category=document.createElement("span");
-      category.className="badge";category.textContent=survey.category||"Health";
+      desc.className="muted";
+      desc.textContent=survey.description||"Health questionnaire";
+
       const fee=document.createElement("p");
       fee.className="small";
-      fee.textContent="Access fee: KSh "+Number(survey.access_fee||100);
-      const action=document.createElement("button");
+      fee.textContent="Access fee: KSh "+Number(survey.access_fee||PAYMENT_AMOUNT);
+
+      const button=document.createElement("button");
+
       if(payment){
-        action.className="secondary";action.textContent="Open survey";
-        action.onclick=()=>openSurvey(survey);
+        button.className="secondary";
+        button.textContent="Open survey";
+        button.onclick=()=>openSurvey(survey);
       }else if(pending){
-        action.className="outline";action.textContent="Payment under review";
-        action.disabled=true;
+        button.className="outline";
+        button.textContent="Payment under review";
+        button.disabled=true;
       }else{
-        action.className="primary";action.textContent="View access information";
-        action.onclick=()=>showPage("payment");
+        button.className="primary";
+        button.textContent="View payment instructions";
+        button.onclick=()=>{
+          selectedSurvey=survey;
+          showPage("payment");
+        };
       }
-      card.append(category,title,desc,fee,action);
+
+      card.append(badge,title,desc,fee,button);
       list.appendChild(card);
     });
+
+    loadAdminSurveyOptions();
   }catch(err){
     list.innerHTML="";
     showMessage("surveyMessage","Could not load surveys: "+err.message,"error");
   }
 }
+
+/* PAYMENT SURVEY SELECT */
 async function loadPaymentSurveyOptions(){
   const select=document.getElementById("paymentSurvey");
   select.innerHTML="";
+
   const {data,error}=await db.from("surveys")
-    .select("id,title").eq("published",true);
-  if(error){showMessage("paymentMessage",error.message,"error");return;}
-  if(!data?.length){
-    select.innerHTML='<option value="">No published surveys</option>';return;
+    .select("id,title")
+    .eq("published",true);
+
+  if(error){
+    showMessage("paymentMessage",error.message,"error");
+    return;
   }
-  data.forEach(s=>{
+
+  if(!data?.length){
+    select.innerHTML='<option value="">No published surveys</option>';
+    return;
+  }
+
+  data.forEach(survey=>{
     const option=document.createElement("option");
-    option.value=s.id;option.textContent=s.title;
+    option.value=survey.id;
+    option.textContent=survey.title;
     select.appendChild(option);
   });
+
   if(selectedSurvey)select.value=selectedSurvey.id;
 }
+
+/* PAYMENT REFERENCE SUBMISSION */
 document.getElementById("paymentForm").addEventListener("submit",async e=>{
   e.preventDefault();
   clearMessage("paymentMessage");
-  if(!currentUser)return showPage("login");
-  const survey_id=document.getElementById("paymentSurvey").value;
-  const phone=document.getElementById("paymentPhone").value.trim();
-  const receipt=document.getElementById("paymentReceipt").value.trim().toUpperCase();
-  if(!survey_id||!phone||!receipt){
-    showMessage("paymentMessage","Please complete all fields.","error");return;
+
+  if(!currentUser){
+    showPage("login");
+    return;
   }
+
+  const button=e.target.querySelector('button[type="submit"]');
+  button.disabled=true;
+  button.textContent="Submitting...";
+
   try{
+    const survey_id=document.getElementById("paymentSurvey").value;
+    const phone=document.getElementById("paymentPhone").value.trim();
+    const receipt=document.getElementById("paymentReceipt").value.trim().toUpperCase();
+
+    if(!survey_id||!phone||!receipt){
+      throw new Error("Please complete all payment fields.");
+    }
+
     const {error}=await db.from("payments").insert({
       user_id:currentUser.id,
       survey_id,
-      amount:100,
+      amount:PAYMENT_AMOUNT,
       phone,
       mpesa_receipt:receipt,
       status:"pending"
     });
+
     if(error)throw error;
-    showMessage("paymentMessage","Your payment reference has been submitted. It will remain pending until an administrator verifies it.","success");
-    e.target.reset();
+
+    showMessage(
+      "paymentMessage",
+      "Your payment reference has been submitted. It remains pending until an administrator verifies the transaction.",
+      "success"
+    );
+
+    document.getElementById("paymentReceipt").value="";
+    await loadSurveys();
   }catch(err){
     showMessage("paymentMessage",err.message,"error");
+  }finally{
+    button.disabled=false;
+    button.textContent="Submit payment reference";
   }
 });
+
+/* QUESTIONNAIRE DISPLAY */
 async function openSurvey(survey){
   selectedSurvey=survey;
+
   document.getElementById("questionSurveyTitle").textContent=survey.title;
   document.getElementById("questionSurveyDescription").textContent=survey.description||"";
   document.getElementById("questionList").innerHTML="Loading questions...";
   clearMessage("questionMessage");
+
   showPage("question");
+
   try{
     const {data,error}=await db.from("questions")
       .select("id,question_text,question_type,options")
-      .eq("survey_id",survey.id).order("created_at");
+      .eq("survey_id",survey.id)
+      .order("created_at",{ascending:true});
+
     if(error)throw error;
+
     currentQuestions=data||[];
+
     const list=document.getElementById("questionList");
     list.innerHTML="";
+
     if(!currentQuestions.length){
-      list.textContent="No questions have been added to this survey yet.";return;
+      list.textContent="No questions have been added to this survey yet.";
+      return;
     }
+
     currentQuestions.forEach((q,index)=>{
       const wrap=document.createElement("div");
       wrap.className="question";
-      const label=document.createElement("label");
-      label.textContent=(index+1)+". "+q.question_text;
-      wrap.appendChild(label);
-      if(q.question_type==="multiple_choice"||q.question_type==="single_choice"){
-        (Array.isArray(q.options)?q.options:[]).forEach((option,i)=>{
+
+      const title=document.createElement("label");
+      title.className="question-title";
+      title.textContent=(index+1)+". "+q.question_text;
+      wrap.appendChild(title);
+
+      if(q.question_type==="date"){
+        const input=document.createElement("input");
+        input.type="date";
+        input.name="question_"+q.id;
+        input.required=true;
+        input.max=new Date().toISOString().split("T")[0];
+        wrap.appendChild(input);
+
+      }else if(q.question_type==="single_choice"||
+               q.question_type==="multiple_choice"){
+
+        const options=Array.isArray(q.options)?q.options:[];
+
+        options.forEach(option=>{
           const line=document.createElement("label");
-          line.className="question-option";
+          line.className="option";
+
           const input=document.createElement("input");
           input.type=q.question_type==="multiple_choice"?"checkbox":"radio";
           input.name="question_"+q.id;
           input.value=option;
+
           line.append(input,document.createTextNode(option));
           wrap.appendChild(line);
         });
+
       }else if(q.question_type==="yes_no"){
+
         ["Yes","No"].forEach(option=>{
           const line=document.createElement("label");
-          line.className="question-option";
+          line.className="option";
+
           const input=document.createElement("input");
-          input.type="radio";input.name="question_"+q.id;input.value=option;
-          line.append(input,document.createTextNode(option));wrap.appendChild(line);
+          input.type="radio";
+          input.name="question_"+q.id;
+          input.value=option;
+
+          line.append(input,document.createTextNode(option));
+          wrap.appendChild(line);
         });
+
+      }else if(q.question_type==="short_text"){
+
+        const input=document.createElement("input");
+        input.type="text";
+        input.name="question_"+q.id;
+        input.required=true;
+        input.placeholder="Enter your answer";
+        wrap.appendChild(input);
+
       }else{
+
         const input=document.createElement("textarea");
         input.name="question_"+q.id;
         input.required=true;
         input.placeholder="Type your answer";
         wrap.appendChild(input);
       }
+
       list.appendChild(wrap);
     });
   }catch(err){
     showMessage("questionMessage",err.message,"error");
   }
 }
+
+/* SUBMIT ANSWERS */
 document.getElementById("questionForm").addEventListener("submit",async e=>{
   e.preventDefault();
+
   if(!currentUser||!selectedSurvey)return;
+
   const button=e.target.querySelector('button[type="submit"]');
-  button.disabled=true;button.textContent="Submitting...";
+  button.disabled=true;
+  button.textContent="Submitting...";
+
   try{
     const rows=[];
+
     for(const q of currentQuestions){
-      const elements=[...document.querySelectorAll('[name="question_'+q.id+'"]')];
+      const elements=[
+        ...document.querySelectorAll('[name="question_'+q.id+'"]')
+      ];
+
       let answer="";
+
       if(elements[0]?.type==="checkbox"){
-        answer=elements.filter(el=>el.checked).map(el=>el.value).join(", ");
+        answer=elements.filter(el=>el.checked)
+          .map(el=>el.value).join(", ");
       }else if(elements[0]?.type==="radio"){
         answer=elements.find(el=>el.checked)?.value||"";
       }else{
         answer=elements[0]?.value?.trim()||"";
       }
-      if(!answer)throw new Error("Please answer every question before submitting.");
+
+      if(!answer){
+        throw new Error("Please answer every question before submitting.");
+      }
+
       rows.push({
         user_id:currentUser.id,
         survey_id:selectedSurvey.id,
@@ -769,73 +1151,275 @@ document.getElementById("questionForm").addEventListener("submit",async e=>{
         answer
       });
     }
+
+    if(!rows.length){
+      throw new Error("This survey does not have any questions yet.");
+    }
+
     const {error}=await db.from("responses").insert(rows);
     if(error)throw error;
+
     showMessage("questionMessage","Your answers have been submitted successfully.","success");
-    button.disabled=true;
     button.textContent="Answers submitted";
   }catch(err){
     showMessage("questionMessage",err.message,"error");
-    button.disabled=false;button.textContent="Submit answers";
+    button.disabled=false;
+    button.textContent="Submit answers";
   }
 });
+
+/* ADMIN: CREATE SURVEY */
 document.getElementById("createSurveyForm").addEventListener("submit",async e=>{
   e.preventDefault();
-  if(!currentProfile?.is_admin)return;
+
+  if(!currentProfile?.is_admin){
+    showMessage("adminMessage","Administrator access required.","error");
+    return;
+  }
+
   try{
-    const {error}=await db.from("surveys").insert({
+    const {data,error}=await db.from("surveys").insert({
       title:document.getElementById("surveyTitle").value.trim(),
       description:document.getElementById("surveyDescription").value.trim(),
       category:document.getElementById("surveyCategory").value.trim(),
-      access_fee:100,
+      access_fee:PAYMENT_AMOUNT,
       published:false
-    });
+    }).select().single();
+
     if(error)throw error;
-    showMessage("adminMessage","Survey created as a draft. Publish it through your database after checking its content.","success");
+
+    showMessage("adminMessage","Survey draft created successfully. Add questions below.","success");
     e.target.reset();
+
+    await loadAdminSurveyOptions();
+    await loadAdminSurveys();
   }catch(err){
     showMessage("adminMessage",err.message,"error");
   }
 });
+
+/* ADMIN: SURVEY OPTIONS */
+async function loadAdminSurveyOptions(){
+  if(!currentProfile?.is_admin)return;
+
+  const {data,error}=await db.from("surveys")
+    .select("id,title")
+    .order("created_at",{ascending:false});
+
+  if(error)return;
+
+  const select=document.getElementById("adminSurveySelect");
+  select.innerHTML="";
+
+  (data||[]).forEach(survey=>{
+    const option=document.createElement("option");
+    option.value=survey.id;
+    option.textContent=survey.title;
+    select.appendChild(option);
+  });
+}
+
+/* ADMIN: ADD QUESTIONS */
+document.getElementById("addQuestionForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+
+  if(!currentProfile?.is_admin){
+    showMessage("questionAdminMessage","Administrator access required.","error");
+    return;
+  }
+
+  try{
+    const survey_id=document.getElementById("adminSurveySelect").value;
+    const question_text=document.getElementById("adminQuestionText").value.trim();
+    const question_type=document.getElementById("adminQuestionType").value;
+    const rawOptions=document.getElementById("adminQuestionOptions").value;
+
+    if(!survey_id)throw new Error("Create or select a survey first.");
+
+    const optionsNeeded=[
+      "single_choice","multiple_choice"
+    ].includes(question_type);
+
+    const options=optionsNeeded
+      ?rawOptions.split("\n").map(x=>x.trim()).filter(Boolean)
+      :null;
+
+    if(optionsNeeded&&(!options||options.length<2)){
+      throw new Error("Enter at least two options, one per line.");
+    }
+
+    const {error}=await db.from("questions").insert({
+      survey_id,
+      question_text,
+      question_type,
+      options
+    });
+
+    if(error)throw error;
+
+    showMessage("questionAdminMessage","Question added successfully.","success");
+    document.getElementById("adminQuestionText").value="";
+    document.getElementById("adminQuestionOptions").value="";
+  }catch(err){
+    showMessage("questionAdminMessage",err.message,"error");
+  }
+});
+
+/* ADMIN: PUBLISH / UNPUBLISH */
+async function loadAdminSurveys(){
+  if(!currentProfile?.is_admin)return;
+
+  const area=document.getElementById("adminSurveyList");
+  area.textContent="Loading surveys...";
+
+  try{
+    const {data,error}=await db.from("surveys")
+      .select("id,title,published,access_fee")
+      .order("created_at",{ascending:false});
+
+    if(error)throw error;
+
+    area.innerHTML="";
+
+    if(!data?.length){
+      area.textContent="No surveys created yet.";
+      return;
+    }
+
+    data.forEach(survey=>{
+      const box=document.createElement("div");
+      box.className="admin-item";
+
+      const title=document.createElement("strong");
+      title.textContent=survey.title;
+
+      const status=document.createElement("p");
+      status.className="small";
+      status.textContent=survey.published?"Published":"Draft";
+
+      const button=document.createElement("button");
+      button.className=survey.published?"outline":"secondary";
+      button.textContent=survey.published?"Unpublish":"Publish";
+
+      button.onclick=()=>changeSurveyStatus(survey.id,!survey.published);
+
+      box.append(title,status,button);
+      area.appendChild(box);
+    });
+  }catch(err){
+    area.textContent="Error: "+err.message;
+  }
+}
+
+async function changeSurveyStatus(id,published){
+  if(!currentProfile?.is_admin)return;
+
+  const action=published?"publish":"unpublish";
+
+  if(!confirm("Are you sure you want to "+action+" this survey?"))return;
+
+  const {error}=await db.from("surveys")
+    .update({published})
+    .eq("id",id);
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  alert("Survey status updated.");
+  await loadAdminSurveys();
+  await loadSurveys();
+}
+
+/* ADMIN: REVIEW PAYMENTS */
 async function loadPendingPayments(){
   if(!currentProfile?.is_admin)return;
+
   const area=document.getElementById("pendingPayments");
-  area.textContent="Loading...";
+  area.textContent="Loading payment requests...";
+
   try{
     const {data,error}=await db.from("payments")
       .select("id,user_id,survey_id,amount,phone,mpesa_receipt,status,created_at")
-      .eq("status","pending").order("created_at",{ascending:true});
+      .eq("status","pending")
+      .order("created_at",{ascending:true});
+
     if(error)throw error;
+
     area.innerHTML="";
-    if(!data?.length){area.textContent="No pending payments.";return;}
-    data.forEach(p=>{
+
+    if(!data?.length){
+      area.textContent="No pending payment references.";
+      return;
+    }
+
+    data.forEach(payment=>{
       const box=document.createElement("div");
-      box.className="notice";
-      const info=document.createElement("p");
-      info.textContent="Receipt: "+p.mpesa_receipt+" | Phone: "+p.phone+" | Amount: KSh "+p.amount+" | Survey: "+p.survey_id;
+      box.className="admin-item";
+
+      const details=document.createElement("p");
+      details.textContent=
+        "Receipt: "+payment.mpesa_receipt+
+        " | Phone: "+payment.phone+
+        " | Amount: KSh "+payment.amount+
+        " | Survey ID: "+payment.survey_id;
+
       const approve=document.createElement("button");
-      approve.className="secondary";approve.textContent="Confirm payment";
-      approve.onclick=()=>updatePayment(p.id,"confirmed");
+      approve.className="secondary";
+      approve.textContent="Confirm after checking M-Pesa";
+      approve.onclick=()=>updatePayment(payment.id,"confirmed");
+
       const reject=document.createElement("button");
-      reject.className="outline";reject.textContent="Reject";
-      reject.onclick=()=>updatePayment(p.id,"rejected");
-      box.append(info,approve,reject);
+      reject.className="outline";
+      reject.style.marginLeft="7px";
+      reject.textContent="Reject";
+      reject.onclick=()=>updatePayment(payment.id,"rejected");
+
+      box.append(details,approve,reject);
       area.appendChild(box);
     });
-  }catch(err){area.textContent="Error: "+err.message;}
+  }catch(err){
+    area.textContent="Error: "+err.message;
+  }
 }
+
 async function updatePayment(id,status){
   if(!currentProfile?.is_admin)return;
-  if(!confirm("Are you sure you want to mark this payment as "+status+"?"))return;
-  const {error}=await db.from("payments").update({status}).eq("id",id);
-  if(error){alert(error.message);return;}
+
+  const message=status==="confirmed"
+    ?"Have you checked the actual M-Pesa transaction and confirmed the amount, recipient and reference?"
+    :"Are you sure you want to reject this payment reference?";
+
+  if(!confirm(message))return;
+
+  const {error}=await db.from("payments")
+    .update({status})
+    .eq("id",id)
+    .eq("status","pending");
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
   alert("Payment status updated.");
-  loadPendingPayments();
+  await loadPendingPayments();
 }
+
+/* INITIAL STARTUP */
 (async()=>{
   await refreshSession();
-  if(currentUser)showPage("dashboard");
-  else showPage("home");
+
+  if(currentUser){
+    showPage("dashboard");
+    if(currentProfile?.is_admin){
+      await loadAdminSurveyOptions();
+      await loadAdminSurveys();
+    }
+  }else{
+    showPage("home");
+  }
 })();
 </script>
 </body>
