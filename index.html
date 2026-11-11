@@ -1,136 +1,378 @@
 
-create extension if not exists pgcrypto;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenya Health Sector</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f7f5;color:#24352d}
+header{background:#075b3b;color:white;padding:20px}
+header h2{margin:0}
+nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+button{background:#087747;color:white;border:0;padding:12px 17px;border-radius:7px;cursor:pointer}
+button:hover{opacity:.9}
+button.secondary{background:#e5eee9;color:#075b3b}
+main{max-width:950px;margin:25px auto;padding:15px}
+.card{background:white;padding:20px;margin-bottom:17px;border-radius:12px;box-shadow:0 2px 10px #0000000c}
+input,textarea{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #ccd8d1;border-radius:7px}
+small,.muted{color:#64756b}
+.price{font-weight:bold;color:#087747}
+.hidden{display:none}
+.survey{border:1px solid #dce8e0;padding:15px;border-radius:9px;margin:12px 0}
+footer{text-align:center;background:#063d29;color:white;padding:20px;margin-top:35px}
+</style>
+</head>
+<body>
 
-create table public.profiles (
-  id uuid primary key references auth.users(id) on delete cascade,
-  full_name text not null,
-  phone text,
-  is_admin boolean default false,
-  created_at timestamptz default now()
+<header>
+<h2>Kenya Health Sector</h2>
+<p>Health research and public questionnaires</p>
+<nav>
+<button onclick="showSection('home')">Home</button>
+<button onclick="showSection('account')">Account</button>
+<button onclick="showSection('surveys')">Surveys</button>
+<button onclick="logout()">Logout</button>
+</nav>
+</header>
+
+<main>
+
+<section id="home" class="card">
+<h2>Welcome</h2>
+<p>Participate in health-related questionnaires and research surveys.</p>
+<p>Each survey requires a separate access payment of <b>KSh 100</b>.</p>
+<p class="muted">The displayed KSh 250 reference value is not a participant reward or guaranteed payment. Completing a survey does not earn money.</p>
+<button onclick="showSection('account')">Register or Login</button>
+</section>
+
+<section id="account" class="card hidden">
+<h2>Create an account</h2>
+<label>Full name</label>
+<input id="fullName" placeholder="Your full name">
+<label>Phone number</label>
+<input id="phone" placeholder="07XXXXXXXX">
+<label>Email address</label>
+<input id="email" type="email" placeholder="Email">
+<label>Password</label>
+<input id="password" type="password" placeholder="Password">
+<button onclick="register()">Register</button>
+
+<hr>
+<h3>Already registered? Login</h3>
+<input id="loginEmail" type="email" placeholder="Email address">
+<input id="loginPassword" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="authMessage"></p>
+</section>
+
+<section id="dashboard" class="card hidden">
+<h2>My Dashboard</h2>
+<p id="welcome"></p>
+<p>Choose a survey below to view its details and unlock it.</p>
+<button onclick="loadSurveys()">Refresh surveys</button>
+<div id="surveyList"></div>
+</section>
+
+<section id="payment" class="card hidden">
+<h2>Unlock survey</h2>
+<div id="paymentDetails"></div>
+<p><b>Payment number:</b> 0718282275</p>
+<p><b>Business label:</b> E Commerce</p>
+<p><b>Registered recipient:</b> Maureen Bwire</p>
+<p><b>Amount:</b> KSh 100</p>
+<p class="muted">Confirm the recipient name displayed by M-Pesa before sending money. Do not send payment if the details do not match.</p>
+<label>Your M-Pesa phone number</label>
+<input id="paymentPhone" placeholder="07XXXXXXXX">
+<label>M-Pesa transaction code</label>
+<input id="receipt" placeholder="Enter transaction code after payment">
+<button onclick="submitPayment()">Submit payment for verification</button>
+<p id="paymentMessage"></p>
+</section>
+
+<section id="questions" class="card hidden">
+<h2 id="questionTitle">Survey questions</h2>
+<p class="muted">Please avoid entering names, ID numbers, contact details or other identifying medical information in your answers.</p>
+<div id="questionList"></div>
+</section>
+
+<section class="card">
+<h3>Privacy and consent</h3>
+<p>Before participating, read the survey description and decide whether you wish to participate. Do not submit personal medical records or identifying health information. Survey operators must explain how responses are used, stored and protected.</p>
+<p class="muted">This is an independently operated website and is not an official Kenyan government website.</p>
+</section>
+
+</main>
+
+<footer>
+<p>Kenya Health Sector</p>
+<p>Independent health questionnaire platform</p>
+</footer>
+
+<script>
+// Replace these two values with your NEW Supabase project details.
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
 );
 
-create table public.surveys (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  description text,
-  category text default 'Health',
-  access_fee numeric(10,2) not null default 100,
-  published boolean default false,
-  created_at timestamptz default now()
-);
+let currentUser = null;
+let selectedSurvey = null;
 
-create table public.questions (
-  id uuid primary key default gen_random_uuid(),
-  survey_id uuid references public.surveys(id) on delete cascade,
-  question_text text not null,
-  question_type text default 'text',
-  options jsonb,
-  created_at timestamptz default now()
-);
+function showSection(id){
+  document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
 
-create table public.payments (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id),
-  survey_id uuid references public.surveys(id),
-  amount numeric(10,2) not null default 100,
-  phone text not null,
-  mpesa_receipt text,
-  status text not null default 'pending',
-  created_at timestamptz default now(),
-  constraint valid_payment_status
-    check (status in ('pending','confirmed','rejected'))
-);
+async function register(){
+  const name=document.getElementById("fullName").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
 
-create table public.responses (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id),
-  survey_id uuid references public.surveys(id),
-  question_id uuid references public.questions(id),
-  answer text,
-  created_at timestamptz default now()
-);
+  if(!name||!phone||!email||!password){
+    return alert("Please complete all registration fields.");
+  }
 
-alter table public.profiles enable row level security;
-alter table public.surveys enable row level security;
-alter table public.questions enable row level security;
-alter table public.payments enable row level security;
-alter table public.responses enable row level security;
+  const {data,error}=await db.auth.signUp({
+    email,password,
+    options:{data:{full_name:name,phone:phone}}
+  });
 
-create or replace function public.is_admin()
-returns boolean
-language sql
-security definer
-set search_path = public
-stable
-as $$
-  select exists (
-    select 1 from public.profiles
-    where id = auth.uid() and is_admin = true
-  );
-$$;
+  if(error) return alert(error.message);
 
-create policy "Read own profile"
-on public.profiles for select
-using (id = auth.uid() or public.is_admin());
+  if(data.user && data.session){
+    const {error:profileError}=await db.from("profiles").upsert({
+      id:data.user.id,
+      full_name:name,
+      phone:phone
+    });
+    if(profileError) return alert(profileError.message);
+  }
 
-create policy "Create own profile"
-on public.profiles for insert
-with check (id = auth.uid());
+  document.getElementById("authMessage").innerText =
+    data.session ? "Registration successful." :
+    "Check your email to confirm your account, then log in.";
+}
 
-create policy "Admin manages profiles"
-on public.profiles for update
-using (public.is_admin());
+async function login(){
+  const email=document.getElementById("loginEmail").value.trim();
+  const password=document.getElementById("loginPassword").value;
 
-create policy "Read published surveys"
-on public.surveys for select
-using (published = true or public.is_admin());
+  const {data,error}=await db.auth.signInWithPassword({email,password});
 
-create policy "Admin manages surveys"
-on public.surveys for all
-using (public.is_admin())
-with check (public.is_admin());
+  if(error) return alert(error.message);
 
-create policy "Paid users read questions"
-on public.questions for select
-using (
-  public.is_admin()
-  or exists (
-    select 1 from public.payments p
-    where p.user_id = auth.uid()
-      and p.survey_id = questions.survey_id
-      and p.status = 'confirmed'
-  )
-);
+  currentUser=data.user;
+  await ensureProfile();
+  showDashboard();
+}
 
-create policy "Users submit pending payments"
-on public.payments for insert
-with check (
-  user_id = auth.uid()
-  and status = 'pending'
-  and amount = 100
-);
+async function ensureProfile(){
+  if(!currentUser) return;
 
-create policy "Users read own payments"
-on public.payments for select
-using (user_id = auth.uid() or public.is_admin());
+  const {data}=await db.from("profiles")
+    .select("id").eq("id",currentUser.id).maybeSingle();
 
-create policy "Admin verifies payments"
-on public.payments for update
-using (public.is_admin())
-with check (public.is_admin());
+  if(!data){
+    await db.from("profiles").insert({
+      id:currentUser.id,
+      full_name:currentUser.user_metadata?.full_name || "User",
+      phone:currentUser.user_metadata?.phone || ""
+    });
+  }
+}
 
-create policy "Users read own responses"
-on public.responses for select
-using (user_id = auth.uid() or public.is_admin());
+async function showDashboard(){
+  const {data}=await db.auth.getUser();
+  if(!data.user) return;
 
-create policy "Paid users submit responses"
-on public.responses for insert
-with check (
-  user_id = auth.uid()
-  and exists (
-    select 1 from public.payments p
-    where p.user_id = auth.uid()
-      and p.survey_id = responses.survey_id
-      and p.status = 'confirmed'
-  )
-);
+  currentUser=data.user;
+  document.getElementById("welcome").innerText=
+    "Welcome, "+(currentUser.user_metadata?.full_name || currentUser.email);
+
+  showSection("dashboard");
+  await loadSurveys();
+}
+
+async function loadSurveys(){
+  const list=document.getElementById("surveyList");
+  list.innerHTML="Loading surveys...";
+
+  const {data,error}=await db.from("surveys")
+    .select("*").eq("published",true).order("created_at");
+
+  if(error){
+    list.innerText=error.message;
+    return;
+  }
+
+  if(!data.length){
+    list.innerText="No surveys are available yet.";
+    return;
+  }
+
+  list.innerHTML="";
+
+  data.forEach(survey=>{
+    const item=document.createElement("div");
+    item.className="survey";
+
+    const title=document.createElement("h3");
+    title.textContent=survey.title;
+
+    const description=document.createElement("p");
+    description.textContent=survey.description || "";
+
+    const fee=document.createElement("p");
+    fee.innerHTML='<span class="price">Access fee: KSh 100</span>';
+
+    const reference=document.createElement("p");
+    reference.className="muted";
+    reference.textContent=
+      "Reference value: KSh 250 (not participant earnings or a reward).";
+
+    const button=document.createElement("button");
+    button.textContent="View / Unlock survey";
+    button.onclick=()=>openSurvey(survey);
+
+    item.append(title,description,fee,reference,button);
+    list.appendChild(item);
+  });
+}
+
+async function openSurvey(survey){
+  if(!currentUser){
+    alert("Please log in first.");
+    return showSection("account");
+  }
+
+  selectedSurvey=survey;
+
+  const {data:payment}=await db.from("payments")
+    .select("id,status")
+    .eq("survey_id",survey.id)
+    .eq("user_id",currentUser.id)
+    .eq("status","confirmed")
+    .maybeSingle();
+
+  if(payment){
+    return loadQuestions(survey);
+  }
+
+  document.getElementById("paymentDetails").innerText=
+    "You selected: "+survey.title+
+    ". Pay KSh 100 separately to unlock this survey.";
+
+  document.getElementById("paymentMessage").innerText="";
+  showSection("payment");
+}
+
+async function submitPayment(){
+  if(!currentUser||!selectedSurvey){
+    return alert("Please select a survey and log in.");
+  }
+
+  const phone=document.getElementById("paymentPhone").value.trim();
+  const receipt=document.getElementById("receipt").value.trim();
+
+  if(!phone||!receipt){
+    return alert("Enter your payment phone number and transaction code.");
+  }
+
+  const {error}=await db.from("payments").insert({
+    user_id:currentUser.id,
+    survey_id:selectedSurvey.id,
+    amount:100,
+    phone:phone,
+    mpesa_receipt:receipt,
+    status:"pending"
+  });
+
+  if(error){
+    document.getElementById("paymentMessage").innerText=error.message;
+    return;
+  }
+
+  document.getElementById("paymentMessage").innerText=
+    "Payment reference submitted. Your access is pending administrator verification.";
+}
+
+async function loadQuestions(survey){
+  showSection("questions");
+  document.getElementById("questionTitle").innerText=survey.title;
+
+  const list=document.getElementById("questionList");
+  list.innerHTML="Loading questions...";
+
+  const {data,error}=await db.from("questions")
+    .select("*").eq("survey_id",survey.id);
+
+  if(error){
+    list.innerText=error.message;
+    return;
+  }
+
+  if(!data.length){
+    list.innerText="No questions have been added to this survey yet.";
+    return;
+  }
+
+  list.innerHTML="";
+
+  data.forEach(q=>{
+    const box=document.createElement("div");
+    box.className="survey";
+
+    const title=document.createElement("p");
+    title.textContent=q.question_text;
+
+    const answer=document.createElement("textarea");
+    answer.placeholder="Your answer";
+
+    const save=document.createElement("button");
+    save.textContent="Submit answer";
+
+    save.onclick=async()=>{
+      if(!answer.value.trim()) return alert("Enter your answer.");
+
+      const {error}=await db.from("responses").insert({
+        user_id:currentUser.id,
+        survey_id:survey.id,
+        question_id:q.id,
+        answer:answer.value.trim()
+      });
+
+      alert(error ? error.message : "Answer submitted.");
+      if(!error) answer.disabled=true;
+    };
+
+    box.append(title,answer,save);
+    list.appendChild(box);
+  });
+}
+
+async function logout(){
+  await db.auth.signOut();
+  currentUser=null;
+  showSection("home");
+}
+
+async function restoreSession(){
+  const {data}=await db.auth.getSession();
+  if(data.session){
+    currentUser=data.session.user;
+    await ensureProfile();
+    showDashboard();
+  }
+}
+
+restoreSession();
+</script>
+</body>
+</html>
