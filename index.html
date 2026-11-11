@@ -3,781 +3,840 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#123b78">
-<title>Kenya Health Sector</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenya Health Sector | Health Research</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 :root {
-  --blue:#123b78;
-  --blue2:#1e5aa8;
-  --red:#c6283d;
-  --red-dark:#a91f32;
-  --light:#f2f6fb;
-  --ink:#1c2b3a;
-  --muted:#617184;
-  --border:#d8e1ec;
+  --red:#d71935;
+  --blue:#0755a5;
+  --dark:#10243b;
+  --light:#f3f7fc;
+  --white:#fff;
+  --muted:#66758a;
+  --border:#e1e8f0;
 }
-* {box-sizing:border-box}
-body {
+*{box-sizing:border-box}
+body{
   margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--dark);
   background:var(--light);
-  color:var(--ink);
-  font-family:Arial,sans-serif;
 }
-header {
-  background:linear-gradient(110deg,var(--blue),var(--blue2));
-  color:white;
-  padding:18px;
+header{
+  background:white;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:10;
 }
-.brand {
+.nav{
+  max-width:1150px;
+  margin:auto;
+  padding:13px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.brand{
   display:flex;
   align-items:center;
-  gap:13px;
-  max-width:1000px;
-  margin:auto;
+  gap:10px;
+  font-weight:800;
+  color:var(--blue);
+  font-size:17px;
 }
-.logo {width:62px;height:62px;flex-shrink:0}
-.brand h1 {font-size:22px;margin:0 0 5px}
-.brand p {margin:0;font-size:13px;color:#e1eafa}
-nav {
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-  max-width:1000px;
-  margin:16px auto 0;
+.logo{
+  width:43px;height:43px;
+  border-radius:12px;
+  background:#edf4ff;
+  display:grid;
+  place-items:center;
 }
-button {
+.logo svg{width:34px;height:34px}
+.nav-actions{display:flex;gap:8px;flex-wrap:wrap}
+button,.btn{
   border:0;
   border-radius:8px;
-  padding:12px 16px;
-  background:var(--red);
-  color:white;
-  font-weight:bold;
+  padding:11px 16px;
+  font-weight:700;
   cursor:pointer;
+  font-size:14px;
 }
-button:hover {background:var(--red-dark)}
-button.secondary {
-  background:white;
-  color:var(--blue);
-  border:1px solid var(--border);
-}
-button:disabled {opacity:.6;cursor:wait}
-main {max-width:1000px;margin:24px auto;padding:0 14px}
-.card {
-  background:white;
-  padding:22px;
-  margin-bottom:18px;
-  border-radius:14px;
-  border:1px solid #e5ebf2;
-  box-shadow:0 4px 18px #17385c0c;
-}
-h2 {color:var(--blue);margin-top:0}
-input,textarea,select {
-  width:100%;
-  padding:13px;
-  border:1px solid #cbd6e3;
-  border-radius:8px;
-  margin:7px 0 15px;
-  font:inherit;
-  background:white;
-}
-textarea {min-height:95px}
-label {font-size:14px;font-weight:bold}
-.hidden {display:none!important}
-.muted {color:var(--muted);font-size:14px;line-height:1.6}
-.error {color:#b42318;font-size:14px}
-.success {color:#087443;font-size:14px}
-.survey {
-  border:1px solid var(--border);
-  border-left:4px solid var(--red);
-  border-radius:10px;
-  padding:16px;
-  margin:13px 0;
-}
-.notice {
-  background:#f0f5fc;
-  border:1px solid #dbe6f4;
-  padding:14px;
-  border-radius:9px;
-  line-height:1.6;
-}
-.auth-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
-footer {
-  background:#102f5e;
+.primary{background:var(--red);color:white}
+.secondary{background:var(--blue);color:white}
+.outline{background:white;color:var(--blue);border:1px solid var(--blue)}
+button:disabled{opacity:.55;cursor:not-allowed}
+main{max-width:1150px;margin:auto;padding:25px 18px 60px}
+.hero{
+  background:linear-gradient(115deg,#064b91,#0876c9);
+  border-radius:20px;
+  padding:45px 35px;
   color:white;
-  text-align:center;
-  padding:25px;
-  margin-top:35px;
+  display:grid;
+  grid-template-columns:1.4fr .8fr;
+  gap:20px;
+  align-items:center;
 }
-footer p {color:#dce7f6;font-size:13px}
-@media(max-width:650px) {
-  .auth-grid {grid-template-columns:1fr}
-  .brand h1 {font-size:19px}
-  nav button {flex:1}
+.hero h1{font-size:clamp(30px,5vw,48px);margin:0 0 15px;line-height:1.12}
+.hero p{line-height:1.7;max-width:620px;color:#e8f3ff}
+.hero-art{
+  background:#ffffff16;
+  border:1px solid #ffffff35;
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+}
+.hero-art svg{width:150px;max-width:100%}
+.section{margin-top:38px}
+.section h2{font-size:25px;margin:0 0 12px}
+.muted{color:var(--muted);line-height:1.65}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:21px;
+  box-shadow:0 5px 18px #172b4d08;
+}
+.card h3{margin:10px 0}
+.card-icon{
+  width:43px;height:43px;
+  display:grid;place-items:center;
+  border-radius:12px;
+  background:#edf4ff;
+  color:var(--blue);
+  font-size:22px;
+}
+.steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+}
+.step-number{
+  width:34px;height:34px;border-radius:50%;
+  background:#fff0f1;color:var(--red);
+  display:grid;place-items:center;font-weight:800;
+}
+.panel{
+  background:white;border:1px solid var(--border);
+  padding:23px;border-radius:15px;
+  max-width:600px;margin:20px auto;
+}
+.panel h2{margin-top:0}
+label{display:block;font-weight:700;font-size:13px;margin:13px 0 6px}
+input,select,textarea{
+  width:100%;padding:13px;
+  border:1px solid #ccd7e4;
+  border-radius:8px;font:inherit;
+  background:white;
+}
+textarea{min-height:90px;resize:vertical}
+.form-button{width:100%;margin-top:17px}
+.small{font-size:12px;color:var(--muted);line-height:1.6}
+.notice{
+  padding:13px;border-radius:9px;
+  background:#edf4ff;color:#174b82;
+  margin:12px 0;line-height:1.5;font-size:13px;
+}
+.error{background:#fff0f0;color:#a51225}
+.success{background:#eaf8ef;color:#176b37}
+.hidden{display:none!important}
+.badge{
+  display:inline-block;padding:5px 9px;
+  background:#edf4ff;color:var(--blue);
+  border-radius:20px;font-size:11px;font-weight:700;
+}
+.survey-card{display:flex;flex-direction:column;gap:10px}
+.survey-card button{margin-top:auto}
+.question{
+  padding:17px 0;border-bottom:1px solid var(--border)
+}
+.question label{font-size:15px}
+.question-option{display:flex;align-items:center;gap:9px;margin:9px 0}
+.question-option input{width:auto}
+footer{
+  background:#10243b;color:#dce7f5;
+  padding:30px 18px;text-align:center;
+  line-height:1.7;font-size:13px;
+}
+footer strong{color:white}
+.topline{color:var(--red);font-size:12px;font-weight:800;letter-spacing:1px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr;padding:30px 22px}
+  .hero-art{display:none}
+  .grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .nav{align-items:flex-start}
+  .brand{font-size:14px}
+  .nav-actions button{padding:9px 10px;font-size:12px}
+}
+@media(max-width:420px){
+  .steps{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
-
 <header>
-  <div class="brand">
-    <svg class="logo" viewBox="0 0 100 100" role="img" aria-label="Medical cross and stethoscope logo">
-      <circle cx="50" cy="50" r="47" fill="#fff"/>
-      <path d="M43 17h14v20h20v14H57v20H43V51H23V37h20z" fill="#c6283d"/>
-      <path d="M24 72c-5-4-7-11-3-16 3-4 9-4 12 0l4 5 4-5c4-4 10-4 13 0 4 5 2 12-3 16L41 83z"
-        fill="none" stroke="#123b78" stroke-width="4"
-        stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M70 62v11c0 7-5 12-12 12"
-        fill="none" stroke="#123b78" stroke-width="4"
-        stroke-linecap="round"/>
-      <circle cx="57" cy="85" r="4" fill="#c6283d"/>
-    </svg>
-    <div>
-      <h1>Kenya Health Sector</h1>
-      <p>Independent health information and research platform</p>
+  <div class="nav">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 100 100" fill="none" aria-label="Medical logo">
+          <path d="M42 10h16v28h28v16H58v28H42V54H14V38h28z" fill="#d71935"/>
+          <path d="M72 65c0 15-9 23-21 23S30 80 30 65" stroke="#0755a5" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="30" cy="65" r="5" fill="#0755a5"/>
+          <circle cx="72" cy="65" r="5" fill="#0755a5"/>
+        </svg>
+      </div>
+      <span>KENYA HEALTH SECTOR</span>
+    </div>
+    <div class="nav-actions">
+      <button class="outline" id="navLogin" onclick="showPage('login')">Login</button>
+      <button class="primary" id="navRegister" onclick="showPage('register')">Create Account</button>
+      <button class="outline hidden" id="navDashboard" onclick="showPage('dashboard')">Dashboard</button>
+      <button class="outline hidden" id="navLogout" onclick="logout()">Logout</button>
     </div>
   </div>
-
-  <nav>
-    <button class="secondary" onclick="showHome()">Home</button>
-    <button onclick="showAccount()">Create Account / Login</button>
-    <button id="dashboardNav" class="hidden" onclick="openDashboard()">Dashboard</button>
-    <button id="logoutNav" class="hidden" onclick="logout()">Logout</button>
-  </nav>
 </header>
 
 <main>
-
-<section id="home" class="card">
-  <h2>Welcome to Kenya Health Sector</h2>
-  <p>
-    Welcome to our independent online health information and research platform.
-  </p>
-  <p class="muted">
-    Create an account or log in to access member content.
-  </p>
-  <button onclick="showAccount()">Get Started</button>
-  <p class="muted">
-    This platform is independently operated and is not affiliated with
-    the Government of Kenya or the Ministry of Health.
-  </p>
-</section>
-
-<section id="account" class="card hidden">
-  <h2>Member Access</h2>
-
-  <div class="auth-grid">
-    <div>
-      <h3>Create an Account</h3>
-
-      <label for="fullName">Full Name</label>
-      <input id="fullName" autocomplete="name" placeholder="Enter full name">
-
-      <label for="phone">Phone Number</label>
-      <input id="phone" autocomplete="tel" placeholder="07XXXXXXXX">
-
-      <label for="email">Email Address</label>
-      <input id="email" type="email" autocomplete="email" placeholder="Enter email">
-
-      <label for="password">Password</label>
-      <input id="password" type="password" autocomplete="new-password" placeholder="At least 8 characters">
-
-      <button id="registerButton" onclick="register()">Create Account</button>
+  <!-- PUBLIC HOMEPAGE -->
+  <section id="homePage">
+    <div class="hero">
+      <div>
+        <div class="topline" style="color:#ffd9df">HEALTH RESEARCH • KENYA</div>
+        <h1>Have a voice in the future of healthcare.</h1>
+        <p>
+          Join our online health research community and share your views
+          through questionnaires about healthcare awareness, public health
+          and community experiences.
+        </p>
+        <div class="actions">
+          <button class="primary" onclick="showPage('register')">Create Your Account</button>
+          <button class="outline" onclick="showPage('login')">Member Login</button>
+        </div>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 200 180" fill="none">
+          <rect x="35" y="22" width="130" height="130" rx="24" fill="white"/>
+          <path d="M90 45h20v29h29v20h-29v29H90V94H61V74h29z" fill="#d71935"/>
+          <path d="M54 139h92" stroke="#0755a5" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="100" cy="154" r="9" fill="#d71935"/>
+        </svg>
+        <h3>Better health through informed research</h3>
+        <p class="small" style="color:#eaf4ff">Share your perspective. Support better understanding.</p>
+      </div>
     </div>
 
-    <div>
-      <h3>Already Registered?</h3>
-
-      <label for="loginEmail">Email Address</label>
-      <input id="loginEmail" type="email" autocomplete="email" placeholder="Enter email">
-
-      <label for="loginPassword">Password</label>
-      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password">
-
-      <button id="loginButton" onclick="login()">Login</button>
-
+    <section class="section">
+      <h2>Welcome to Kenya Health Sector</h2>
       <p class="muted">
-        If email confirmation is enabled, confirm your email before logging in.
+        We provide an online platform for people to participate in health-related
+        questionnaires. Survey participation is subject to eligibility and
+        availability.
       </p>
+    </section>
+
+    <section class="section">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="card">
+          <div class="step-number">1</div>
+          <h3>Create an account</h3>
+          <p class="muted">Register with your details to access the members' area.</p>
+        </div>
+        <div class="card">
+          <div class="step-number">2</div>
+          <h3>View surveys</h3>
+          <p class="muted">Explore available health-related questionnaires after login.</p>
+        </div>
+        <div class="card">
+          <div class="step-number">3</div>
+          <h3>Check access</h3>
+          <p class="muted">Review any access requirements before participating.</p>
+        </div>
+        <div class="card">
+          <div class="step-number">4</div>
+          <h3>Submit answers</h3>
+          <p class="muted">Complete eligible questionnaires and submit your responses.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Our research areas</h2>
+      <div class="grid">
+        <div class="card"><div class="card-icon">♥</div><h3>Public health</h3><p class="muted">Community health awareness and public health topics.</p></div>
+        <div class="card"><div class="card-icon">✚</div><h3>Healthcare access</h3><p class="muted">Experiences and views about accessing health services.</p></div>
+        <div class="card"><div class="card-icon">⚕</div><h3>Health education</h3><p class="muted">Knowledge, information and health education topics.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card">
+        <h2>Ready to participate?</h2>
+        <p class="muted">Create an account to access the members-only survey area.</p>
+        <button class="primary" onclick="showPage('register')">Get Started</button>
+      </div>
+    </section>
+  </section>
+
+  <!-- REGISTRATION -->
+  <section id="registerPage" class="hidden">
+    <div class="panel">
+      <div class="topline">JOIN OUR COMMUNITY</div>
+      <h2>Create your account</h2>
+      <p class="muted">Register to access available questionnaires.</p>
+      <div id="registerMessage" class="notice hidden"></div>
+      <form id="registerForm">
+        <label>Full name</label>
+        <input id="regName" required maxlength="100" placeholder="Enter your full name">
+        <label>Phone number</label>
+        <input id="regPhone" required placeholder="07XXXXXXXX">
+        <label>Email address</label>
+        <input id="regEmail" type="email" required placeholder="you@example.com">
+        <label>Password</label>
+        <input id="regPassword" type="password" minlength="8" required placeholder="At least 8 characters">
+        <button class="primary form-button" type="submit">Create Account</button>
+      </form>
+      <p class="small">Already registered? <a href="#" onclick="showPage('login')">Login here</a>.</p>
+      <p class="small">By registering, you agree to use the platform responsibly and provide accurate information.</p>
     </div>
-  </div>
+  </section>
 
-  <p id="authMessage" aria-live="polite" class="muted"></p>
-</section>
+  <!-- LOGIN -->
+  <section id="loginPage" class="hidden">
+    <div class="panel">
+      <div class="topline">MEMBER ACCESS</div>
+      <h2>Welcome back</h2>
+      <p class="muted">Login to access your member dashboard.</p>
+      <div id="loginMessage" class="notice hidden"></div>
+      <form id="loginForm">
+        <label>Email address</label>
+        <input id="loginEmail" type="email" required placeholder="Your email">
+        <label>Password</label>
+        <input id="loginPassword" type="password" required placeholder="Your password">
+        <button class="secondary form-button" type="submit">Login</button>
+      </form>
+      <p class="small">New here? <a href="#" onclick="showPage('register')">Create an account</a>.</p>
+    </div>
+  </section>
 
-<section id="dashboard" class="card hidden">
-  <h2>Member Dashboard</h2>
-  <p id="welcome"></p>
-  <p class="muted">Your available member content appears below.</p>
-  <button class="secondary" onclick="loadSurveys()">Refresh</button>
-  <div id="surveyList"></div>
-</section>
+  <!-- MEMBER DASHBOARD -->
+  <section id="dashboardPage" class="hidden">
+    <div class="card">
+      <div class="topline">MEMBER AREA</div>
+      <h2 id="welcomeTitle">Your dashboard</h2>
+      <p class="muted">Welcome to your Kenya Health Sector member area.</p>
+      <div class="actions">
+        <button class="secondary" onclick="loadSurveys()">Refresh surveys</button>
+        <button class="outline" onclick="showPage('payment')">Payment information</button>
+      </div>
+    </div>
 
-<section id="payment" class="card hidden">
-  <h2>Survey Access Payment</h2>
+    <section class="section">
+      <h2>Available surveys</h2>
+      <p class="muted">Only surveys published by the platform administrator appear here.</p>
+      <div id="surveyMessage" class="notice hidden"></div>
+      <div id="surveyList" class="grid">
+        <div class="card">Loading surveys...</div>
+      </div>
+    </section>
 
-  <div id="paymentDetails"></div>
+    <section id="adminSection" class="section hidden">
+      <div class="card">
+        <div class="topline">ADMINISTRATION</div>
+        <h2>Admin dashboard</h2>
+        <p class="muted">Create surveys and review submitted payment references.</p>
+        <h3>Create a survey</h3>
+        <form id="createSurveyForm">
+          <label>Survey title</label>
+          <input id="surveyTitle" required>
+          <label>Description</label>
+          <textarea id="surveyDescription" required></textarea>
+          <label>Category</label>
+          <input id="surveyCategory" placeholder="e.g. Public health">
+          <button class="secondary form-button" type="submit">Create survey</button>
+        </form>
+        <div id="adminMessage" class="notice hidden"></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>Pending payment reviews</h3>
+        <button class="outline" onclick="loadPendingPayments()">Refresh payments</button>
+        <div id="pendingPayments" style="margin-top:14px">Select refresh to load payment requests.</div>
+      </div>
+    </section>
+  </section>
 
-  <div class="notice">
-    <p><strong>Access Fee: KSh 100</strong></p>
-    <p>Payment Method: M-Pesa Pochi</p>
-    <p>Business Label: E Commerce</p>
-    <p>Phone Number: <strong>0718282275</strong></p>
-    <p>Registered Recipient: <strong>Maureen Bwire</strong></p>
-  </div>
+  <!-- PAYMENT DETAILS -->
+  <section id="paymentPage" class="hidden">
+    <div class="panel">
+      <div class="topline">SURVEY ACCESS</div>
+      <h2>Payment information</h2>
+      <p class="muted">
+        The current survey access fee is KSh 100 per survey where a fee applies.
+        Check the survey details before making any payment.
+      </p>
+      <div class="notice">
+        M-Pesa Pochi la Biashara: <strong>0718282275</strong><br>
+        Business label: <strong>E Commerce</strong><br>
+        Registered recipient name: <strong>Maureen Bwire</strong><br>
+        Amount: <strong>KSh 100</strong>
+      </div>
+      <p class="small">
+        Confirm the recipient name and amount on your M-Pesa screen before
+        sending money. Do not pay if the details shown do not match.
+        Payment is not automatically confirmed by this website.
+      </p>
+      <form id="paymentForm">
+        <label>Select survey</label>
+        <select id="paymentSurvey" required></select>
+        <label>Your M-Pesa phone number</label>
+        <input id="paymentPhone" required placeholder="07XXXXXXXX">
+        <label>M-Pesa transaction code</label>
+        <input id="paymentReceipt" required maxlength="30" placeholder="Enter the transaction code">
+        <button class="primary form-button" type="submit">Submit payment reference</button>
+      </form>
+      <div id="paymentMessage" class="notice hidden"></div>
+      <p class="small">Your payment request will remain pending until it is checked by an administrator.</p>
+      <button class="outline" onclick="showPage('dashboard')">Back to dashboard</button>
+    </div>
+  </section>
 
-  <p class="muted">
-    Confirm the recipient name displayed by M-Pesa before sending money.
-    Do not proceed if the details do not match. Access is granted only
-    after an administrator verifies the payment.
-  </p>
+  <!-- QUESTIONNAIRE -->
+  <section id="questionPage" class="hidden">
+    <div class="card">
+      <div class="topline">HEALTH QUESTIONNAIRE</div>
+      <h2 id="questionSurveyTitle">Survey</h2>
+      <p class="muted" id="questionSurveyDescription"></p>
+      <div id="questionMessage" class="notice hidden"></div>
+      <form id="questionForm">
+        <div id="questionList"></div>
+        <button class="primary form-button" type="submit">Submit answers</button>
+      </form>
+      <button class="outline" style="margin-top:12px" onclick="showPage('dashboard')">Back to surveys</button>
+    </div>
+  </section>
 
-  <label for="paymentPhone">Your M-Pesa Phone Number</label>
-  <input id="paymentPhone" placeholder="07XXXXXXXX">
-
-  <label for="receipt">M-Pesa Transaction Code</label>
-  <input id="receipt" placeholder="Enter transaction code">
-
-  <button id="paymentButton" onclick="submitPayment()">Submit for Verification</button>
-  <p id="paymentMessage" aria-live="polite" class="muted"></p>
-</section>
-
-<section id="questions" class="card hidden">
-  <h2 id="questionTitle">Questionnaire</h2>
-  <p class="muted">
-    Answer only questions you are comfortable with. Do not enter your
-    ID number, passwords or unnecessary identifying medical information.
-  </p>
-  <div id="questionList"></div>
-</section>
-
-<section id="privacy" class="card">
-  <h3>Privacy and Consent</h3>
-  <p class="muted">
-    Before participating, read the purpose of each activity and decide
-    freely whether to participate. Health information can be sensitive.
-    The platform should explain how responses are used, who can access
-    them and how long they are retained. Avoid sharing personal medical
-    details unless necessary and you understand how they will be handled.
-  </p>
-</section>
-
+  <!-- PRIVACY -->
+  <section id="privacyPage" class="hidden">
+    <div class="panel">
+      <h2>Privacy and responsible participation</h2>
+      <p class="muted">
+        We request account information to operate the platform and associate
+        survey responses with member accounts. Do not submit passwords,
+        identification numbers or unnecessary sensitive medical information
+        in survey answers.
+      </p>
+      <p class="muted">
+        Survey participation should be voluntary. Read each questionnaire
+        before answering. If a survey requests sensitive health information,
+        its purpose and handling should be explained before participation.
+      </p>
+      <button class="outline" onclick="showPage('home')">Back home</button>
+    </div>
+  </section>
 </main>
 
 <footer>
-  <strong>Kenya Health Sector</strong>
-  <p>Independent Platform · Not a Government Website</p>
+  <strong>KENYA HEALTH SECTOR</strong><br>
+  Independent online health research and questionnaire platform.<br>
+  This is not a government website or a medical service provider.<br>
+  <a href="#" style="color:#fff" onclick="showPage('privacy')">Privacy information</a>
 </footer>
 
 <script>
-const SUPABASE_URL =
-"https://ykwkrtfhkohpijjctdcj.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"sb_publishable_DRAUL8NP62CcmWEpZ6iv0w_kbsSfOmI";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const SUPABASE_URL = "https://ykwkrtfhkohpijjctdcj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DRAUL8NP62CcmWEpZ6iv0w_kbsSfOmI";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
+let currentProfile = null;
 let selectedSurvey = null;
+let currentQuestions = [];
 
-function show(id) {
-  document.querySelectorAll("main section").forEach(section =>
-    section.classList.add("hidden")
-  );
+const pages = [
+  "homePage","registerPage","loginPage","dashboardPage",
+  "paymentPage","questionPage","privacyPage"
+];
 
-  document.getElementById(id).classList.remove("hidden");
+function showMessage(id, message, type="notice"){
+  const el=document.getElementById(id);
+  el.textContent=message;
+  el.className="notice "+type;
+  el.classList.remove("hidden");
 }
-
-function showHome() {
-  show("home");
+function clearMessage(id){
+  const el=document.getElementById(id);
+  if(el){el.textContent="";el.className="notice hidden";}
 }
-
-function showAccount() {
-  show("account");
+function showPage(name){
+  pages.forEach(id=>document.getElementById(id).classList.add("hidden"));
+  const page=document.getElementById(name+"Page");
+  if(!page)return;
+  if((name==="dashboard"||name==="payment"||name==="question")&&!currentUser){
+    showPage("login");return;
+  }
+  page.classList.remove("hidden");
+  window.scrollTo(0,0);
+  if(name==="dashboard")loadSurveys();
+  if(name==="payment")loadPaymentSurveyOptions();
 }
-
-function message(id,text,type="muted") {
-  const el = document.getElementById(id);
-  el.className = type;
-  el.textContent = text;
+function updateNavigation(){
+  const logged=!!currentUser;
+  document.getElementById("navLogin").classList.toggle("hidden",logged);
+  document.getElementById("navRegister").classList.toggle("hidden",logged);
+  document.getElementById("navDashboard").classList.toggle("hidden",!logged);
+  document.getElementById("navLogout").classList.toggle("hidden",!logged);
 }
-
-function updateNavigation() {
-  document.getElementById("dashboardNav")
-    .classList.toggle("hidden",!currentUser);
-
-  document.getElementById("logoutNav")
-    .classList.toggle("hidden",!currentUser);
-}
-
-function requireLogin() {
-  if (currentUser) return true;
-
-  showAccount();
-  message(
-    "authMessage",
-    "Please create an account or log in to continue."
-  );
-
-  return false;
-}
-
-async function register() {
-  const button = document.getElementById("registerButton");
-
-  const name = document.getElementById("fullName").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-
-  if (!name || !phone || !email || !password) {
-    message("authMessage","Please complete all registration fields.","error");
+async function ensureProfile(){
+  if(!currentUser)return;
+  const {data,error}=await db.from("profiles")
+    .select("*").eq("id",currentUser.id).maybeSingle();
+  if(error)throw error;
+  if(data){
+    currentProfile=data;
     return;
   }
-
-  if (password.length < 8) {
-    message("authMessage","Password must contain at least 8 characters.","error");
-    return;
-  }
-
-  button.disabled = true;
-  button.textContent = "Creating Account...";
-
-  try {
-    const {data,error} = await db.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name:name,
-          phone:phone
-        }
-      }
-    });
-
-    if (error) throw error;
-
-    if (data.session && data.user) {
-      currentUser = data.user;
-
-      await ensureProfile(name,phone);
-      updateNavigation();
-      await showDashboard();
-
-      message("authMessage","Account created successfully.","success");
-    } else {
-      message(
-        "authMessage",
-        "Registration received. Check your email and confirm your account. Then return here and log in.",
-        "success"
-      );
-    }
-
-  } catch(error) {
-    message(
-      "authMessage",
-      error.message || "Account creation failed. Please try again.",
-      "error"
-    );
-  } finally {
-    button.disabled = false;
-    button.textContent = "Create Account";
-  }
+  const metadata=currentUser.user_metadata||{};
+  const {data:newProfile,error:insertError}=await db.from("profiles")
+    .insert({
+      id:currentUser.id,
+      full_name:metadata.full_name||currentUser.email,
+      phone:metadata.phone||"",
+      is_admin:false
+    }).select().single();
+  if(insertError)throw insertError;
+  currentProfile=newProfile;
 }
-
-async function login() {
-  const button = document.getElementById("loginButton");
-
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-
-  if (!email || !password) {
-    message("authMessage","Enter your email and password.","error");
-    return;
+async function refreshSession(){
+  const {data,error}=await db.auth.getSession();
+  if(error)console.error(error);
+  currentUser=data.session?.user||null;
+  if(currentUser){
+    try{await ensureProfile();}
+    catch(e){console.error("Profile:",e.message);}
+  }else{
+    currentProfile=null;
   }
-
-  button.disabled = true;
-  button.textContent = "Logging In...";
-
-  try {
-    const {data,error} = await db.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) throw error;
-
-    currentUser = data.user;
-
-    await ensureProfile();
-    updateNavigation();
-    await showDashboard();
-
-    message("authMessage","You are now logged in.","success");
-
-  } catch(error) {
-    message(
-      "authMessage",
-      error.message || "Login failed. Check your details.",
-      "error"
-    );
-  } finally {
-    button.disabled = false;
-    button.textContent = "Login";
-  }
-}
-
-async function ensureProfile(name,phone) {
-  if (!currentUser) return;
-
-  const {data,error} = await db
-    .from("profiles")
-    .select("id")
-    .eq("id",currentUser.id)
-    .maybeSingle();
-
-  if (error) throw error;
-
-  if (!data) {
-    const {error:insertError} = await db
-      .from("profiles")
-      .insert({
-        id:currentUser.id,
-        full_name:name || currentUser.user_metadata?.full_name || "Member",
-        phone:phone || currentUser.user_metadata?.phone || ""
-      });
-
-    if (insertError) throw insertError;
-  }
-}
-
-async function openDashboard() {
-  if (!requireLogin()) return;
-  await showDashboard();
-}
-
-async function showDashboard() {
-  if (!currentUser) {
-    showAccount();
-    return;
-  }
-
-  document.getElementById("welcome").textContent =
-    "Welcome, " +
-    (currentUser.user_metadata?.full_name || currentUser.email || "Member");
-
   updateNavigation();
-  show("dashboard");
-  await loadSurveys();
+  if(currentUser){
+    document.getElementById("welcomeTitle").textContent=
+      "Welcome, "+(currentProfile?.full_name||currentUser.email);
+    const admin=!!currentProfile?.is_admin;
+    document.getElementById("adminSection").classList.toggle("hidden",!admin);
+  }
 }
-
-async function loadSurveys() {
-  if (!requireLogin()) return;
-
-  const list = document.getElementById("surveyList");
-  list.textContent = "Loading member content...";
-
-  try {
-    const {data,error} = await db
-      .from("surveys")
-      .select("id,title,description,category,access_fee")
-      .eq("published",true)
-      .order("created_at");
-
-    if (error) throw error;
-
-    list.replaceChildren();
-
-    if (!data || data.length === 0) {
-      list.textContent = "There is currently no published member content.";
-      return;
-    }
-
-    data.forEach(survey => {
-      const box = document.createElement("div");
-      box.className = "survey";
-
-      const title = document.createElement("h3");
-      title.textContent = survey.title;
-
-      const description = document.createElement("p");
-      description.textContent = survey.description || "Member questionnaire";
-
-      const category = document.createElement("p");
-      category.className = "muted";
-      category.textContent = "Category: " + (survey.category || "Health");
-
-      const fee = document.createElement("p");
-      fee.textContent = "Access Fee: KSh 100";
-      fee.style.color = "var(--blue)";
-      fee.style.fontWeight = "bold";
-
-      const button = document.createElement("button");
-      button.textContent = "Continue";
-      button.onclick = () => openSurvey(survey);
-
-      box.append(title,description,category,fee,button);
-      list.appendChild(box);
+db.auth.onAuthStateChange((_event,session)=>{
+  currentUser=session?.user||null;
+  updateNavigation();
+});
+document.getElementById("registerForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  clearMessage("registerMessage");
+  const button=e.target.querySelector("button[type=submit]");
+  button.disabled=true;button.textContent="Creating account...";
+  const full_name=document.getElementById("regName").value.trim();
+  const phone=document.getElementById("regPhone").value.trim();
+  const email=document.getElementById("regEmail").value.trim();
+  const password=document.getElementById("regPassword").value;
+  try{
+    const {data,error}=await db.auth.signUp({
+      email,password,
+      options:{data:{full_name,phone}}
     });
-
-  } catch(error) {
-    list.textContent = "Could not load member content: " + error.message;
+    if(error)throw error;
+    if(data.session){
+      currentUser=data.session.user;
+      await ensureProfile();
+      updateNavigation();
+      showMessage("registerMessage","Your account has been created successfully.","success");
+      showPage("dashboard");
+    }else{
+      showMessage("registerMessage","Registration received. Check your email for a confirmation link, then return here and log in.","success");
+    }
+  }catch(err){
+    showMessage("registerMessage",err.message,"error");
+  }finally{
+    button.disabled=false;button.textContent="Create Account";
   }
+});
+document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  clearMessage("loginMessage");
+  const button=e.target.querySelector("button[type=submit]");
+  button.disabled=true;button.textContent="Logging in...";
+  try{
+    const {data,error}=await db.auth.signInWithPassword({
+      email:document.getElementById("loginEmail").value.trim(),
+      password:document.getElementById("loginPassword").value
+    });
+    if(error)throw error;
+    currentUser=data.user;
+    await ensureProfile();
+    await refreshSession();
+    showPage("dashboard");
+  }catch(err){
+    showMessage("loginMessage",err.message,"error");
+  }finally{
+    button.disabled=false;button.textContent="Login";
+  }
+});
+async function logout(){
+  await db.auth.signOut();
+  currentUser=null;currentProfile=null;
+  updateNavigation();
+  showPage("home");
 }
-
-async function openSurvey(survey) {
-  if (!requireLogin()) return;
-
-  selectedSurvey = survey;
-
-  try {
-    const {data,error} = await db
-      .from("payments")
-      .select("id")
-      .eq("user_id",currentUser.id)
-      .eq("survey_id",survey.id)
-      .eq("status","confirmed")
-      .limit(1);
-
-    if (error) throw error;
-
-    if (data && data.length > 0) {
-      await loadQuestions(survey);
+async function loadSurveys(){
+  if(!currentUser)return;
+  const list=document.getElementById("surveyList");
+  list.innerHTML='<div class="card">Loading surveys...</div>';
+  clearMessage("surveyMessage");
+  try{
+    const {data:surveys,error}=await db.from("surveys")
+      .select("id,title,description,category,access_fee")
+      .eq("published",true).order("created_at",{ascending:false});
+    if(error)throw error;
+    if(!surveys?.length){
+      list.innerHTML='<div class="card">There are currently no published surveys. Please check again later.</div>';
       return;
     }
-
-    document.getElementById("paymentDetails").textContent =
-      "Selected questionnaire: " + survey.title +
-      ". Access fee: KSh 100.";
-
-    document.getElementById("paymentPhone").value = "";
-    document.getElementById("receipt").value = "";
-
-    message("paymentMessage","");
-    show("payment");
-
-  } catch(error) {
-    alert("Could not check access: " + error.message);
+    const {data:payments,error:paymentError}=await db.from("payments")
+      .select("survey_id,status").eq("user_id",currentUser.id);
+    if(paymentError)throw paymentError;
+    list.innerHTML="";
+    surveys.forEach(survey=>{
+      const payment=payments?.find(p=>p.survey_id===survey.id&&p.status==="confirmed");
+      const pending=payments?.find(p=>p.survey_id===survey.id&&p.status==="pending");
+      const card=document.createElement("div");
+      card.className="card survey-card";
+      const title=document.createElement("h3");
+      title.textContent=survey.title;
+      const desc=document.createElement("p");
+      desc.className="muted";desc.textContent=survey.description||"Health questionnaire";
+      const category=document.createElement("span");
+      category.className="badge";category.textContent=survey.category||"Health";
+      const fee=document.createElement("p");
+      fee.className="small";
+      fee.textContent="Access fee: KSh "+Number(survey.access_fee||100);
+      const action=document.createElement("button");
+      if(payment){
+        action.className="secondary";action.textContent="Open survey";
+        action.onclick=()=>openSurvey(survey);
+      }else if(pending){
+        action.className="outline";action.textContent="Payment under review";
+        action.disabled=true;
+      }else{
+        action.className="primary";action.textContent="View access information";
+        action.onclick=()=>showPage("payment");
+      }
+      card.append(category,title,desc,fee,action);
+      list.appendChild(card);
+    });
+  }catch(err){
+    list.innerHTML="";
+    showMessage("surveyMessage","Could not load surveys: "+err.message,"error");
   }
 }
-
-async function submitPayment() {
-  if (!requireLogin() || !selectedSurvey) return;
-
-  const button = document.getElementById("paymentButton");
-
-  const phone = document.getElementById("paymentPhone").value.trim();
-  const receipt = document.getElementById("receipt").value.trim();
-
-  if (!phone || !receipt) {
-    message("paymentMessage","Enter your phone number and transaction code.","error");
-    return;
+async function loadPaymentSurveyOptions(){
+  const select=document.getElementById("paymentSurvey");
+  select.innerHTML="";
+  const {data,error}=await db.from("surveys")
+    .select("id,title").eq("published",true);
+  if(error){showMessage("paymentMessage",error.message,"error");return;}
+  if(!data?.length){
+    select.innerHTML='<option value="">No published surveys</option>';return;
   }
-
-  button.disabled = true;
-
-  try {
-    const {data:existing,error:checkError} = await db
-      .from("payments")
-      .select("id")
-      .eq("user_id",currentUser.id)
-      .eq("survey_id",selectedSurvey.id)
-      .eq("status","pending")
-      .limit(1);
-
-    if (checkError) throw checkError;
-
-    if (existing && existing.length) {
-      message(
-        "paymentMessage",
-        "You already have a pending payment. Please wait for verification."
-      );
-      return;
-    }
-
-    const {error} = await db.from("payments").insert({
+  data.forEach(s=>{
+    const option=document.createElement("option");
+    option.value=s.id;option.textContent=s.title;
+    select.appendChild(option);
+  });
+  if(selectedSurvey)select.value=selectedSurvey.id;
+}
+document.getElementById("paymentForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  clearMessage("paymentMessage");
+  if(!currentUser)return showPage("login");
+  const survey_id=document.getElementById("paymentSurvey").value;
+  const phone=document.getElementById("paymentPhone").value.trim();
+  const receipt=document.getElementById("paymentReceipt").value.trim().toUpperCase();
+  if(!survey_id||!phone||!receipt){
+    showMessage("paymentMessage","Please complete all fields.","error");return;
+  }
+  try{
+    const {error}=await db.from("payments").insert({
       user_id:currentUser.id,
-      survey_id:selectedSurvey.id,
+      survey_id,
       amount:100,
-      phone:phone,
+      phone,
       mpesa_receipt:receipt,
       status:"pending"
     });
-
-    if (error) throw error;
-
-    message(
-      "paymentMessage",
-      "Your transaction code has been submitted. An administrator must verify the payment before access is granted.",
-      "success"
-    );
-
-  } catch(error) {
-    message(
-      "paymentMessage",
-      error.message || "Could not submit payment details.",
-      "error"
-    );
-  } finally {
-    button.disabled = false;
-  }
-}
-
-async function loadQuestions(survey) {
-  if (!requireLogin()) return;
-
-  show("questions");
-
-  document.getElementById("questionTitle").textContent = survey.title;
-
-  const list = document.getElementById("questionList");
-  list.textContent = "Loading questions...";
-
-  try {
-    const {data,error} = await db
-      .from("questions")
-      .select("id,question_text,question_type,options")
-      .eq("survey_id",survey.id);
-
-    if (error) throw error;
-
-    list.replaceChildren();
-
-    if (!data || !data.length) {
-      list.textContent = "No questions have been added yet.";
-      return;
-    }
-
-    data.forEach(question => {
-      const box = document.createElement("div");
-      box.className = "survey";
-
-      const title = document.createElement("p");
-      title.textContent = question.question_text;
-
-      let answer;
-
-      if (
-        question.question_type === "multiple_choice" &&
-        Array.isArray(question.options)
-      ) {
-        answer = document.createElement("select");
-
-        const placeholder = document.createElement("option");
-        placeholder.value = "";
-        placeholder.textContent = "Choose an answer";
-        answer.appendChild(placeholder);
-
-        question.options.forEach(option => {
-          const opt = document.createElement("option");
-          opt.value = option;
-          opt.textContent = option;
-          answer.appendChild(opt);
-        });
-
-      } else {
-        answer = document.createElement("textarea");
-        answer.placeholder = "Type your answer";
-      }
-
-      const save = document.createElement("button");
-      save.textContent = "Submit Answer";
-
-      save.onclick = async () => {
-        const value = answer.value.trim();
-
-        if (!value) {
-          alert("Please enter an answer.");
-          return;
-        }
-
-        save.disabled = true;
-
-        const {error:saveError} = await db
-          .from("responses")
-          .insert({
-            user_id:currentUser.id,
-            survey_id:survey.id,
-            question_id:question.id,
-            answer:value
-          });
-
-        save.disabled = false;
-
-        if (saveError) {
-          alert(saveError.message);
-        } else {
-          answer.disabled = true;
-          save.textContent = "Answer Submitted";
-        }
-      };
-
-      box.append(title,answer,save);
-      list.appendChild(box);
-    });
-
-  } catch(error) {
-    list.textContent = "Questions could not be loaded: " + error.message;
-  }
-}
-
-async function logout() {
-  await db.auth.signOut();
-
-  currentUser = null;
-  selectedSurvey = null;
-
-  updateNavigation();
-  showHome();
-}
-
-async function restoreSession() {
-  try {
-    const {data,error} = await db.auth.getSession();
-
-    if (error) throw error;
-
-    if (data.session) {
-      currentUser = data.session.user;
-      await ensureProfile();
-      updateNavigation();
-      await showDashboard();
-    } else {
-      currentUser = null;
-      updateNavigation();
-      showHome();
-    }
-
-  } catch(error) {
-    console.error(error);
-    currentUser = null;
-    updateNavigation();
-    showHome();
-  }
-}
-
-db.auth.onAuthStateChange((event,session) => {
-  if (event === "SIGNED_OUT") {
-    currentUser = null;
-    selectedSurvey = null;
-    updateNavigation();
-    showHome();
+    if(error)throw error;
+    showMessage("paymentMessage","Your payment reference has been submitted. It will remain pending until an administrator verifies it.","success");
+    e.target.reset();
+  }catch(err){
+    showMessage("paymentMessage",err.message,"error");
   }
 });
-
-restoreSession();
+async function openSurvey(survey){
+  selectedSurvey=survey;
+  document.getElementById("questionSurveyTitle").textContent=survey.title;
+  document.getElementById("questionSurveyDescription").textContent=survey.description||"";
+  document.getElementById("questionList").innerHTML="Loading questions...";
+  clearMessage("questionMessage");
+  showPage("question");
+  try{
+    const {data,error}=await db.from("questions")
+      .select("id,question_text,question_type,options")
+      .eq("survey_id",survey.id).order("created_at");
+    if(error)throw error;
+    currentQuestions=data||[];
+    const list=document.getElementById("questionList");
+    list.innerHTML="";
+    if(!currentQuestions.length){
+      list.textContent="No questions have been added to this survey yet.";return;
+    }
+    currentQuestions.forEach((q,index)=>{
+      const wrap=document.createElement("div");
+      wrap.className="question";
+      const label=document.createElement("label");
+      label.textContent=(index+1)+". "+q.question_text;
+      wrap.appendChild(label);
+      if(q.question_type==="multiple_choice"||q.question_type==="single_choice"){
+        (Array.isArray(q.options)?q.options:[]).forEach((option,i)=>{
+          const line=document.createElement("label");
+          line.className="question-option";
+          const input=document.createElement("input");
+          input.type=q.question_type==="multiple_choice"?"checkbox":"radio";
+          input.name="question_"+q.id;
+          input.value=option;
+          line.append(input,document.createTextNode(option));
+          wrap.appendChild(line);
+        });
+      }else if(q.question_type==="yes_no"){
+        ["Yes","No"].forEach(option=>{
+          const line=document.createElement("label");
+          line.className="question-option";
+          const input=document.createElement("input");
+          input.type="radio";input.name="question_"+q.id;input.value=option;
+          line.append(input,document.createTextNode(option));wrap.appendChild(line);
+        });
+      }else{
+        const input=document.createElement("textarea");
+        input.name="question_"+q.id;
+        input.required=true;
+        input.placeholder="Type your answer";
+        wrap.appendChild(input);
+      }
+      list.appendChild(wrap);
+    });
+  }catch(err){
+    showMessage("questionMessage",err.message,"error");
+  }
+}
+document.getElementById("questionForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!currentUser||!selectedSurvey)return;
+  const button=e.target.querySelector('button[type="submit"]');
+  button.disabled=true;button.textContent="Submitting...";
+  try{
+    const rows=[];
+    for(const q of currentQuestions){
+      const elements=[...document.querySelectorAll('[name="question_'+q.id+'"]')];
+      let answer="";
+      if(elements[0]?.type==="checkbox"){
+        answer=elements.filter(el=>el.checked).map(el=>el.value).join(", ");
+      }else if(elements[0]?.type==="radio"){
+        answer=elements.find(el=>el.checked)?.value||"";
+      }else{
+        answer=elements[0]?.value?.trim()||"";
+      }
+      if(!answer)throw new Error("Please answer every question before submitting.");
+      rows.push({
+        user_id:currentUser.id,
+        survey_id:selectedSurvey.id,
+        question_id:q.id,
+        answer
+      });
+    }
+    const {error}=await db.from("responses").insert(rows);
+    if(error)throw error;
+    showMessage("questionMessage","Your answers have been submitted successfully.","success");
+    button.disabled=true;
+    button.textContent="Answers submitted";
+  }catch(err){
+    showMessage("questionMessage",err.message,"error");
+    button.disabled=false;button.textContent="Submit answers";
+  }
+});
+document.getElementById("createSurveyForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!currentProfile?.is_admin)return;
+  try{
+    const {error}=await db.from("surveys").insert({
+      title:document.getElementById("surveyTitle").value.trim(),
+      description:document.getElementById("surveyDescription").value.trim(),
+      category:document.getElementById("surveyCategory").value.trim(),
+      access_fee:100,
+      published:false
+    });
+    if(error)throw error;
+    showMessage("adminMessage","Survey created as a draft. Publish it through your database after checking its content.","success");
+    e.target.reset();
+  }catch(err){
+    showMessage("adminMessage",err.message,"error");
+  }
+});
+async function loadPendingPayments(){
+  if(!currentProfile?.is_admin)return;
+  const area=document.getElementById("pendingPayments");
+  area.textContent="Loading...";
+  try{
+    const {data,error}=await db.from("payments")
+      .select("id,user_id,survey_id,amount,phone,mpesa_receipt,status,created_at")
+      .eq("status","pending").order("created_at",{ascending:true});
+    if(error)throw error;
+    area.innerHTML="";
+    if(!data?.length){area.textContent="No pending payments.";return;}
+    data.forEach(p=>{
+      const box=document.createElement("div");
+      box.className="notice";
+      const info=document.createElement("p");
+      info.textContent="Receipt: "+p.mpesa_receipt+" | Phone: "+p.phone+" | Amount: KSh "+p.amount+" | Survey: "+p.survey_id;
+      const approve=document.createElement("button");
+      approve.className="secondary";approve.textContent="Confirm payment";
+      approve.onclick=()=>updatePayment(p.id,"confirmed");
+      const reject=document.createElement("button");
+      reject.className="outline";reject.textContent="Reject";
+      reject.onclick=()=>updatePayment(p.id,"rejected");
+      box.append(info,approve,reject);
+      area.appendChild(box);
+    });
+  }catch(err){area.textContent="Error: "+err.message;}
+}
+async function updatePayment(id,status){
+  if(!currentProfile?.is_admin)return;
+  if(!confirm("Are you sure you want to mark this payment as "+status+"?"))return;
+  const {error}=await db.from("payments").update({status}).eq("id",id);
+  if(error){alert(error.message);return;}
+  alert("Payment status updated.");
+  loadPendingPayments();
+}
+(async()=>{
+  await refreshSession();
+  if(currentUser)showPage("dashboard");
+  else showPage("home");
+})();
 </script>
-
 </body>
 </html>
